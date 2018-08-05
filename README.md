@@ -188,3 +188,94 @@ Smith, Colin A. and Want, Elizabeth J. and O’Maille, Grace and Abagyan, Ruben 
 Thévenot, Etienne A. and Roux, Aurélie and Xu, Ying and Ezan, Eric and Junot, Christophe (2015). **Analysis of the Human Adult Urinary Metabolome Variations with Age, Body Mass Index, and Gender by Implementing a Comprehensive Workflow for Univariate and OPLS Statistical Analyses.** In *Journal of Proteome Research, 14 (8), pp. 3322–3335.* [doi:10.1021/acs.jproteome.5b00354](http://dx.doi.org/10.1021/acs.jproteome.5b00354)
 
 Yekutieli, Daniel and Benjamini, Yoav (2001) **The control of the false discovery rate in multiple testing under dependency.** In *The Annals of Statistics, 29 (4), pp. 1165-1188.* [doi:10.1214/aos/1013699998](http://dx.doi.org/10.1214/aos/1013699998) 
+
+
+
+## Changelog
+
+
+Changes in version 0.98.9
+=========================
+
+New features
+
+- Fixed bug.
+
+Internal modifications
+
+- Added the hyphen to the characters permitted within regular expressions.
+
+Changes in version 0.98.8
+=========================
+
+New features
+
+- The tool now appears in Galaxy with a new, more representative name: "W4m Data Subset". (Earlier versions of this tool appeared in Galaxy with the name "Sample Subset".)
+- Option was added to log-transform data matrix values.
+- Output datasets are named in conformance with the W4m convention of appending the name of each preprocessing tool to the input dataset name.
+- Superflous "Column that names the sample" input parameter was eliminated.
+- Some documentation was updated or clarified.
+
+Internal modifications
+
+- None
+
+Changes in version 0.98.7
+=========================
+
+New features
+
+- First column of output variableMetadata (that has feature names) now is always named "variableMetadata".
+- First column of output sampleMetadata now (that has sample names) now is always named "sampleMetadata".
+
+Internal modifications
+
+- Now uses w4mclassfilter R package v0.98.7.
+
+Changes in version 0.98.6
+=========================
+
+New features
+
+- Added support for filtering out features whose attributes fall outside specified ranges.
+  For more detail, see "Variable-range filters" above.
+  
+Internal modifications
+
+- Now uses w4mclassfilter R package v0.98.6.
+- Now sorts sample names and feature names in output files because some statistical tools expect the same order in `dataMatrix` row and column names as in the corresponding metadata files.
+
+Changes in version 0.98.3
+=========================
+
+Internal modifications
+
+- Improved input handling.
+- Now uses w4mclassfilter R package v0.98.3, although that version has no functional implications for this tool.
+- Improved reference-list.
+
+Changes in version 0.98.2
+=========================
+
+New features
+
+- Added support for R-flavored regular expression pattern-matching when selecting names of sample-classes.
+- Empty classes argument or zero-length class_column result in no samples filtered out.
+
+Internal modifications
+
+- Support and tests for new features.
+
+Changes in version 0.98.1
+=========================
+
+First release - Wrap the w4mclassfilter R package that implements filtering of W4m data matrix, variable metadata, and sample metadata by class of sample.
+
+New features
+
+- Output *dataMatrix*       is input dataMatrix       as modified by the tool
+- Output *sampleMetadata*   is input sampleMetadata   as modified by the tool
+- Output *variableMetadata* is input variableMetadata as modified by the tool
+
+
+

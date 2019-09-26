@@ -1,27 +1,27 @@
-<tool id="w4mclassfilter" name="W4m Data Subset" version="0.98.11">
+<tool id="w4mclassfilter" name="W4m Data Subset" version="0.98.12">
     <description>Filter W4m data by values or metadata</description>
     <!-- Here is the hyphenation standard that I *try* to apply consistently in my documentation: http://www.sandranoonan.com/dont-let-hyphenation-drive-crazy/ -->
     <requirements>
-        <!-- <requirement type="package" version="6.2">readline</requirement> -->
-        <requirement type="package" version="3.4.1">r-base</requirement>
-        <requirement type="package" version="1.1_4">r-batch</requirement>
-        <requirement type="package" version="0.98.8">w4mclassfilter</requirement>
+        <requirement type="package" version="3.6.1">r-base</requirement>
+        <requirement type="package" version="1.1_5">r-batch</requirement>
+        <requirement type="package" version="0.98.12">w4mclassfilter</requirement>
     </requirements>
     <command detect_errors="aggressive"><![CDATA[
     Rscript $__tool_directory__/w4mclassfilter_wrapper.R
-    dataMatrix_in '$dataMatrix_in'
-    sampleMetadata_in '$sampleMetadata_in'
-    variableMetadata_in '$variableMetadata_in'
-    sampleclassNames '$sampleclassNames'
-    inclusive '$inclusive'
-    wildcards '$wildcards'
-    classnameColumn '$classnameColumn'
-    samplenameColumn 'sampleMetadata'
+    dataMatrix_in         '$dataMatrix_in'
+    sampleMetadata_in     '$sampleMetadata_in'
+    variableMetadata_in   '$variableMetadata_in'
+    sampleclassNames      '$sampleclassNames'
+    inclusive             '$inclusive'
+    wildcards             '$wildcards'
+    classnameColumn       '$classnameColumn'
+    samplenameColumn      'sampleMetadata'
     variable_range_filter '$variableRangeFilter'
-    transformation '$transformation'
-    dataMatrix_out '$dataMatrix_out'
-    sampleMetadata_out '$sampleMetadata_out'
-    variableMetadata_out '$variableMetadata_out'
+    transformation        '$transformation'
+    imputation            '$imputation'
+    dataMatrix_out        '$dataMatrix_out'
+    sampleMetadata_out    '$sampleMetadata_out'
+    variableMetadata_out  '$variableMetadata_out'
     ]]></command>
     <inputs>
         <param name="dataMatrix_in" format="tabular" label="Data matrix file" type="data"
@@ -94,6 +94,12 @@
             <option value="none" selected="true">none</option>
             <option value="log2">log2</option>
             <option value="log10">log10</option>
+        </param>
+        <param name="imputation" label="Imputation of missing values" type="select"
+            help="'zero' (the default) - replace missing values with zero; 'center' - replace missing values with feature-median; 'none' - perform no imputation">
+            <option value="zero" selected="true">zero</option>
+            <option value="center">center</option>
+            <option value="none">none</option>
         </param>
     </inputs>
     <outputs>
@@ -531,13 +537,13 @@ This tool can perform several operations to reduce the number samples or feature
 
 This tool also performs several operations to address several data issues that may impede downstream statistical analysis:
 
-- Missing values in dataMatrix are imputed to zero.
-- The values in the dataMatrix may be log-transformed if desired.
 - Samples that are missing from either sampleMetadata or dataMatrix are eliminated.
 - Features that are missing from either variableMetadata or dataMatrix are eliminated.
 - Features and samples that have zero variance are eliminated.
 - Samples and features are sorted alphabetically in rows and columns of dataMatrix and in rows of variableMetadata and sampleMetadata.
 - The names of the first columns of variableMetadata and sampleMetadata are set respectively to "variableMetadata" and "sampleMetadata".
+- If desired, the values in the dataMatrix may be log-transformed.
+- If desired, each missing value in dataMatrix is replaced with zero or the median value observed for the corresponding feature.
 
 This tool may be applied several times sequentially, which may be useful for:
 
@@ -607,10 +613,15 @@ Variable-range filters (default = no filters)
 	|
 
 Data-transformation (default = '``none``')
-	| '``none``' - do not transform data matrix values
-	| '``log2``' - take the log base 2 of the values in the data matrix
-	| '``log10``' - take the log base 10 of the values in the data matrix
-	| In both cases, negative and missing values are imputed to zero.
+	| '``none``' - Do not transform data matrix values.
+	| '``log2``' - Take the log base 2 of the values in the data matrix.
+	| '``log10``' - Take the log base 10 of the values in the data matrix.
+	|
+
+Data-imputation (default = '``none``')
+	| '``none``' - Do not impute data matrix values.
+	| '``zero``' - Negative and missing values are imputed to zero.
+	| '``center``' - For each feature, negative and missing values are imputed to the median of other values.
 	|
 
 
@@ -753,6 +764,8 @@ This example retains only samples whose 'gender' attribute is 'M'.
 +------------------------------------+-------------------------------+
 | Data transforamtion                | none                          |
 +------------------------------------+-------------------------------+
+| Missing-value imputation           | zero                          |
++------------------------------------+-------------------------------+
 
 **Expected outputs**
 
@@ -789,6 +802,8 @@ This example retains all samples (except those having zero variance for all feat
 | Variable range-filters             | FEATMAX:20.93157:,mz:200:,rt::800  |
 +------------------------------------+------------------------------------+
 | Data transforamtion                | log2                               |
++------------------------------------+------------------------------------+
+| Missing-value imputation           | zero                               |
 +------------------------------------+------------------------------------+
 
 **Expected outputs**

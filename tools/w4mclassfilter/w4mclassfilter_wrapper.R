@@ -23,8 +23,8 @@ options(stringsAsFactors = FALSE)
 
 suppressMessages(library(w4mclassfilter))
 
-if(packageVersion("w4mclassfilter") < "0.98.0")
-    stop("Please use 'w4mclassfilter' versions of 0.98.0 and above")
+if(packageVersion("w4mclassfilter") < "0.98.12")
+    stop("Please use 'w4mclassfilter' versions of 0.98.12 and above")
 
 ## constants
 ##----------
@@ -83,6 +83,16 @@ variableMetadata_out <- as.character(argVc["variableMetadata_out"])
 # other parameters
 
 transformation <- as.character(argVc["transformation"])
+my_imputation_label <- as.character(argVc["imputation"])
+my_imputation_function <- if (my_imputation_label == "zero") {
+  w4m_filter_zero_imputation
+} else if (my_imputation_label == "center") {
+  w4m_filter_median_imputation
+} else if (my_imputation_label == "none") {
+  w4m_filter_no_imputation
+} else {
+  stop(sprintf("Unknown value %s supplied for 'imputation' parameter.  Expected one of {zero,center,none}."))
+}
 wildcards <- as.logical(argVc["wildcards"])
 sampleclassNames <- as.character(argVc["sampleclassNames"])
 sampleclassNames <- strsplit(x = sampleclassNames, split = ",", fixed = TRUE)[[1]]
@@ -100,37 +110,39 @@ variable_range_filter <- strsplit(x = variable_range_filter, split = ",", fixed 
 ## -----------------------------
 ## Transformation and imputation
 ## -----------------------------
-my_w4m_filter_imputation <- if (transformation == "log10") {
+my_transformation_and_imputation <- if (transformation == "log10") {
   function(m) {
     if (!is.matrix(m))
-      stop("Cannot impute and transform data - the supplied data is not in matrix form")
+      stop("Cannot transform and impute data - the supplied data is not in matrix form")
     if (nrow(m) == 0)
-      stop("Cannot impute and transform data - data matrix has no rows")
+      stop("Cannot transform and impute data - data matrix has no rows")
     if (ncol(m) == 0)
-      stop("Cannot impute and transform data - data matrix has no columns")
-    suppressWarnings(
+      stop("Cannot transform and impute data - data matrix has no columns")
+    suppressWarnings({
       # suppress warnings here since non-positive values will produce NaN's that will be fixed in the next step
       m <- log10(m)
-    )
-    return ( w4m_filter_imputation(m) )
+      m[is.na(m)] <- NA
+    })
+    return ( my_imputation_function(m) )
   }
 } else if (transformation == "log2") {
   function(m) {
     if (!is.matrix(m))
-      stop("Cannot impute and transform data - the supplied data is not in matrix form")
+      stop("Cannot transform and impute data - the supplied data is not in matrix form")
     if (nrow(m) == 0)
-      stop("Cannot impute and transform data - data matrix has no rows")
+      stop("Cannot transform and impute data - data matrix has no rows")
     if (ncol(m) == 0)
-      stop("Cannot impute and transform data - data matrix has no columns")
-    suppressWarnings(
+      stop("Cannot transform and impute data - data matrix has no columns")
+    suppressWarnings({
       # suppress warnings here since non-positive values will produce NaN's that will be fixed in the next step
       m <- log2(m)
-    )
-    return ( w4m_filter_imputation(m) )
+      m[is.na(m)] <- NA
+    })
+    return ( my_imputation_function(m) )
   }
 } else {
   # use the method from the w4mclassfilter class
-  w4m_filter_imputation
+  my_imputation_function
 }
 
 ##------------------------------
@@ -150,7 +162,7 @@ result <- w4m_filter_by_sample_class(
 , samplename_column     = samplenameColumn
 , variable_range_filter = variable_range_filter
 , failure_action        = my_print
-, data_imputation       = my_w4m_filter_imputation
+, data_imputation       = my_transformation_and_imputation
 )
 
 my_print("\nResult of '", modNamC, "' Galaxy module call to 'w4mclassfilter::w4m_filter_by_sample_class' R function: ",

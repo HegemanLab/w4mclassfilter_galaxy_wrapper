@@ -1,12 +1,13 @@
-<tool id="w4mclassfilter" name="W4m Data Subset" version="0.98.12">
+<tool id="w4mclassfilter" name="W4m Data Subset" version="0.98.13">
     <description>Filter W4m data by values or metadata</description>
     <!-- Here is the hyphenation standard that I *try* to apply consistently in my documentation: http://www.sandranoonan.com/dont-let-hyphenation-drive-crazy/ -->
     <requirements>
         <requirement type="package" version="3.6.1">r-base</requirement>
         <requirement type="package" version="1.1_5">r-batch</requirement>
-        <requirement type="package" version="0.98.12">w4mclassfilter</requirement>
+        <requirement type="package" version="0.98.13">w4mclassfilter</requirement>
     </requirements>
     <command detect_errors="aggressive"><![CDATA[
+    unset R_HOME;
     Rscript $__tool_directory__/w4mclassfilter_wrapper.R
     dataMatrix_in         '$dataMatrix_in'
     sampleMetadata_in     '$sampleMetadata_in'
@@ -22,6 +23,12 @@
     dataMatrix_out        '$dataMatrix_out'
     sampleMetadata_out    '$sampleMetadata_out'
     variableMetadata_out  '$variableMetadata_out'
+        > '$dataMatrix_out'.stdout
+        2> '$dataMatrix_out'.stderr
+        ;
+        cp '$dataMatrix_out' /tmp/;
+        cp '$dataMatrix_out'.stdout /tmp/;
+        cp '$dataMatrix_out'.stderr /tmp/
     ]]></command>
     <inputs>
         <param name="dataMatrix_in" format="tabular" label="Data matrix file" type="data"
@@ -116,16 +123,27 @@
         <param name="classnameColumn" value="gender"/>
         <param name="sampleclassNames" value="M"/>
         <param name="wildcards" value="FALSE"/>
-        <param name="inclusive" value="filter-in"/>
-        <param name="variableRangeFilter" value="FEATMAX:6.30103:,mz:200:,rt::800"/>
-        <param name="transformation" value="log10"/>
+        <param name="inclusive" value="TRUE"/>
+        <param name="variableRangeFilter" value="FEATMAX:2e6:,mz:200:,rt::800"/>
+        <param name="transformation" value="none"/>
         <output name="dataMatrix_out">
           <assert_contents>
-            <has_text text="5.87336711011293" />
+            <has_text text="747080" />
+            <not_has_text text="13420742" />
+            <not_has_text text="47259" />
           </assert_contents>
         </output>
         <output name="sampleMetadata_out">
           <assert_contents>
+            <has_text text="HU_017" />
+            <has_text text="HU_034" />
+            <has_text text="HU_078" />
+            <has_text text="HU_091" />
+            <has_text text="HU_093" />
+            <has_text text="HU_099" />
+            <has_text text="HU_130" />
+            <has_text text="HU_134" />
+            <has_text text="HU_138" />
             <not_has_text text="HU_028" />
             <not_has_text text="HU_051" />
             <not_has_text text="HU_060" />
@@ -137,94 +155,87 @@
             <not_has_text text="HU_185" />
             <not_has_text text="HU_204" />
             <not_has_text text="HU_208" />
-            <has_text text="HU_017" />
-            <has_text text="HU_034" />
-            <has_text text="HU_078" />
-            <has_text text="HU_091" />
-            <has_text text="HU_093" />
-            <has_text text="HU_099" />
-            <has_text text="HU_130" />
-            <has_text text="HU_134" />
-            <has_text text="HU_138" />
           </assert_contents>
         </output>
         <output name="variableMetadata_out">
           <assert_contents>
-            <not_has_text text="HMDB00191" />
             <has_text     text="HMDB00208" />
+            <has_text     text="HMDB01032" />
+            <has_text     text="HMDB01101.1" />
+            <has_text     text="HMDB13189" />
+            <not_has_text text="HMDB00191" />
             <not_has_text text="HMDB00251" />
             <not_has_text text="HMDB00299" />
             <not_has_text text="HMDB00512" />
             <not_has_text text="HMDB00518" />
             <not_has_text text="HMDB00715" />
             <not_has_text text="HMDB00822" />
-            <has_text     text="HMDB01032" />
-            <has_text     text="HMDB01101.1" />
             <not_has_text text="HMDB03193" />
             <not_has_text text="HMDB04824" />
             <not_has_text text="HMDB10348" />
-            <has_text     text="HMDB13189" />
             <not_has_text text="HMDB59717" />
           </assert_contents>
         </output>
       </test>
       <!-- test 2 -->
-      <test>
+	  <test>
         <param name="dataMatrix_in" value="input_dataMatrix.tsv"/>
         <param name="sampleMetadata_in" value="input_sampleMetadata.tsv"/>
         <param name="variableMetadata_in" value="input_variableMetadata.tsv"/>
-        <param name="classnameColumn" value="sampleMetadata"/>
         <!-- test that hyphens in regular expressions work -->
         <param name="sampleclassNames" value="HU_[0-9][0-9][0-9]"/>
+        <param name="inclusive" value="TRUE"/>
         <param name="wildcards" value="FALSE"/>
-        <param name="inclusive" value="filter-in"/>
-        <param name="variableRangeFilter" value="FEATMAX:20.93157:,mz:200:,rt::800"/>
-        <param name="transformation" value="log2"/>
-        <output name="dataMatrix_out">
+        <param name="classnameColumn" value="sampleMetadata"/>
+		<!-- test that variableRangeFilter works with tranformation -->
+		<param name="variableRangeFilter" value="FEATMAX:6.30103:,mz:200:,rt::800"/>
+        <param name="transformation" value="log10"/>
+        <param name="imputation" value="zero"/>
+        <output name="dataMatrix_out" md5="5644d2ea01d072ee1d0c40e29e9d0089">
           <assert_contents>
-            <has_text text="19.5109032146715" />
+			<has_text text="5.8733671" />
           </assert_contents>
         </output>
         <output name="sampleMetadata_out">
           <assert_contents>
+            <has_text text="HU_017" />
             <has_text text="HU_028" />
+            <has_text text="HU_034" />
             <has_text text="HU_051" />
             <has_text text="HU_060" />
+            <has_text text="HU_078" />
+            <has_text text="HU_091" />
+            <has_text text="HU_093" />
+            <has_text text="HU_099" />
             <has_text text="HU_110" />
+            <has_text text="HU_130" />
+            <has_text text="HU_134" />
+            <has_text text="HU_138" />
             <has_text text="HU_149" />
             <has_text text="HU_152" />
             <has_text text="HU_175" />
             <has_text text="HU_178" />
             <has_text text="HU_185" />
-            <not_has_text text="HU_204" />
             <has_text text="HU_208" />
-            <has_text text="HU_017" />
-            <has_text text="HU_034" />
-            <has_text text="HU_078" />
-            <has_text text="HU_091" />
-            <has_text text="HU_093" />
-            <has_text text="HU_099" />
-            <has_text text="HU_130" />
-            <has_text text="HU_134" />
-            <has_text text="HU_138" />
+            <not_has_text text="HU_204" />
           </assert_contents>
         </output>
         <output name="variableMetadata_out">
           <assert_contents>
             <has_text     text="HMDB00191" />
             <has_text     text="HMDB00208" />
+            <has_text     text="HMDB01032" />
+            <has_text     text="HMDB01101.1" />
+            <has_text     text="HMDB13189" />
             <not_has_text text="HMDB00251" />
             <not_has_text text="HMDB00299" />
             <not_has_text text="HMDB00512" />
             <not_has_text text="HMDB00518" />
             <not_has_text text="HMDB00715" />
             <not_has_text text="HMDB00822" />
-            <has_text     text="HMDB01032" />
-            <has_text     text="HMDB01101.1" />
             <not_has_text text="HMDB03193" />
             <not_has_text text="HMDB04824" />
             <not_has_text text="HMDB10348" />
-            <has_text     text="HMDB13189" />
             <not_has_text text="HMDB59717" />
           </assert_contents>
         </output>
@@ -236,7 +247,7 @@
         <param name="variableMetadata_in" value="input_variableMetadata.tsv"/>
         <param name="classnameColumn" value="gender"/>
         <param name="sampleclassNames" value="M"/>
-        <param name="inclusive" value="filter-in"/>
+        <param name="inclusive" value="TRUE"/>
         <param name="transformation" value="none"/>
         <output name="dataMatrix_out">
           <assert_contents>
@@ -287,7 +298,13 @@
         <param name="classnameColumn" value="gender"/>
         <param name="sampleclassNames" value="*"/>
         <param name="wildcards" value="TRUE"/>
-        <param name="inclusive" value="filter-in"/>
+        <param name="inclusive" value="TRUE"/>
+        <param name="imputation" value="zero"/>
+        <output name="dataMatrix_out" md5="b2eac4946d3803a07606286b50451af4">
+          <assert_contents>
+            <not_has_text text="NA" />
+          </assert_contents>
+        </output>
         <output name="sampleMetadata_out">
           <assert_contents>
             <not_has_text text="HU_204" />
@@ -321,7 +338,7 @@
         <param name="classnameColumn" value="gender"/>
         <param name="sampleclassNames" value="M"/>
         <param name="wildcards" value="FALSE"/>
-        <param name="inclusive" value="filter-in"/>
+        <param name="inclusive" value="TRUE"/>
         <output name="sampleMetadata_out">
           <assert_contents>
             <not_has_text text="HU_028" />
@@ -355,7 +372,7 @@
         <param name="classnameColumn" value="gender"/>
         <param name="sampleclassNames" value="M"/>
         <param name="wildcards" value="FALSE"/>
-        <param name="inclusive" value="filter-in"/>
+        <param name="inclusive" value="TRUE"/>
         <output name="variableMetadata_out">
           <assert_contents>
             <has_text     text="HMDB03193" />
@@ -385,7 +402,7 @@
         <param name="classnameColumn" value="gender"/>
         <param name="sampleclassNames" value="M"/>
         <param name="wildcards" value="FALSE"/>
-        <param name="inclusive" value="filter-in"/>
+        <param name="inclusive" value="TRUE"/>
         <output name="variableMetadata_out">
           <assert_contents>
             <has_text     text="HMDB03193" />
@@ -415,7 +432,7 @@
         <param name="classnameColumn" value="gender"/>
         <param name="sampleclassNames" value="[Mm],[fF]"/>
         <param name="wildcards" value="FALSE"/>
-        <param name="inclusive" value="filter-in"/>
+        <param name="inclusive" value="TRUE"/>
         <output name="sampleMetadata_out">
           <assert_contents>
             <has_text text="HU_028" />
@@ -449,7 +466,7 @@
         <param name="classnameColumn" value=""/>
         <param name="sampleclassNames" value="M"/>
         <param name="wildcards" value="FALSE"/>
-        <param name="inclusive" value="filter-in"/>
+        <param name="inclusive" value="TRUE"/>
         <output name="sampleMetadata_out">
           <assert_contents>
             <has_text text="HU_028" />
@@ -472,6 +489,54 @@
             <has_text text="HU_130" />
             <has_text text="HU_134" />
             <has_text text="HU_138" />
+          </assert_contents>
+        </output>
+      </test>
+      <!-- test 10 - extends test4 with no imputation rather than zero imputation -->
+      <test>
+        <param name="dataMatrix_in" value="input_dataMatrix.tsv"/>
+        <param name="sampleMetadata_in" value="input_sampleMetadata.tsv"/>
+        <param name="variableMetadata_in" value="input_variableMetadata.tsv"/>
+        <param name="classnameColumn" value="gender"/>
+        <param name="sampleclassNames" value="*"/>
+        <param name="wildcards" value="TRUE"/>
+        <param name="inclusive" value="TRUE"/>
+        <param name="imputation" value="none"/>
+        <output name="dataMatrix_out" md5="cc9ab8bdb70b68b43b19b7327d285166">
+          <assert_contents>
+            <not_has_text text="HU_204" />
+            <has_text text="NA" />
+            <has_text text="HU_028" />
+          </assert_contents>
+        </output>
+        <output name="sampleMetadata_out">
+          <assert_contents>
+            <not_has_text text="HU_204" />
+            <has_text text="HU_028" />
+          </assert_contents>
+        </output>
+      </test>
+      <!-- test 11 - extends test4 with center imputation rather than zero imputation -->
+      <test>
+        <param name="dataMatrix_in" value="input_dataMatrix.tsv"/>
+        <param name="sampleMetadata_in" value="input_sampleMetadata.tsv"/>
+        <param name="variableMetadata_in" value="input_variableMetadata.tsv"/>
+        <param name="classnameColumn" value="gender"/>
+        <param name="sampleclassNames" value="*"/>
+        <param name="wildcards" value="TRUE"/>
+        <param name="inclusive" value="TRUE"/>
+        <param name="imputation" value="center"/>
+        <output name="dataMatrix_out" md5="75a4802bb8887709e4d4dec8c2c3d3cf">
+          <assert_contents>
+            <not_has_text text="HU_204" />
+            <not_has_text text="NA" />
+            <has_text text="HU_028" />
+          </assert_contents>
+        </output>
+        <output name="sampleMetadata_out">
+          <assert_contents>
+            <not_has_text text="HU_204" />
+            <has_text text="HU_028" />
           </assert_contents>
         </output>
       </test>

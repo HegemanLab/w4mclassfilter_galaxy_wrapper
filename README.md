@@ -47,13 +47,14 @@ The W4m Data Subset tool selects subsets of samples, features, or data values fo
 
 This tool performs several operations to address several data issues that may impede downstream statistical analysis:
 
-- Missing values in dataMatrix are imputed to zero.
-- The dataMatrix values may be log-transformed if desired.
 - Samples that are missing from either sampleMetadata or dataMatrix are eliminated.
 - Features that are missing from either variableMetadata or dataMatrix are eliminated.
 - Features and samples that have zero variance are eliminated.
 - Samples and features are sorted alphabetically in rows and columns of variableMetadata, sampleMetadata, and dataMatrix.
 - By default, the names of the first columns of variableMetadata and sampleMetadata are set respectively to "variableMetadata" and "sampleMetadata".
+- Negative intensities are replaced by zeros.
+- If desired, the values in the dataMatrix may be log-transformed.
+- If desired, each missing value in dataMatrix is replaced with zero or the median value observed for the corresponding feature.
 
 This tool also can perform several operations to reduce the number samples or features to be analyzed (although **this should be done only in a statistically sensible manner** consistent with the nature of your experiment):
 

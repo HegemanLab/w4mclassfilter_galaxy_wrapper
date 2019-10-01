@@ -103,7 +103,11 @@ The W4m Data Subset tool may be applied several times sequentially; for example,
   - *none* - do not transform data matrix values
   - *log2* - take the log base 2 of the values in the data matrix
   - *log10* - take the log base 10 of the values in the data matrix
-  - In both cases, negative and missing values are imputed to zero.
+- Data imputation (default = 'zero')
+  - *none* - do not impute missing data matrix values
+  - *zero* - substitue zero for missing values in the data matrix
+  - *center* - for missing values in the data matrix, substitute the median intensity for the feature (for samples where it is not missing).
+  - In all cases, negative values are substituted with zeros.
 
 ## Output files
 
@@ -115,6 +119,22 @@ The W4m Data Subset tool may be applied several times sequentially; for example,
 	* (tabular separated values) file identical to the **dataMatrix** file given as an input argument, excepting lacking rows for variables (xC-MS features) that have been filtered out (because of zero variance) and columns that have been filtered out (by the sample-class filter or because of zero variance)
 
 ## NEWS
+
+### Changes in version 0.98.13
+
+#### New features
+
+* Support enhancement https://github.com/HegemanLab/w4mclassfilter/issues/4 - "add and test no-imputation and centering-imputation functions":
+  - Support no imputation.
+  - Support imputating missing feature-intensities as median intensity for the corresponding feature.
+
+#### Internal modifications
+
+* Use v0.98.13 of the [w4mclassfilter bioconda package](https://bioconda.github.io/recipes/w4mclassfilter/README.html).
+
+
+### (Version number 0.98.12 skipped)
+
 
 ### Changes in version 0.98.11
 
@@ -221,4 +241,4 @@ Smith, Colin A. and Want, Elizabeth J. and O’Maille, Grace and Abagyan, Ruben 
 
 Thévenot, Etienne A. and Roux, Aurélie and Xu, Ying and Ezan, Eric and Junot, Christophe (2015). **Analysis of the Human Adult Urinary Metabolome Variations with Age, Body Mass Index, and Gender by Implementing a Comprehensive Workflow for Univariate and OPLS Statistical Analyses.** In *Journal of Proteome Research, 14 (8), pp. 3322–3335.* [doi:10.1021/acs.jproteome.5b00354](http://dx.doi.org/10.1021/acs.jproteome.5b00354)
 
-Yekutieli, Daniel and Benjamini, Yoav (2001) **The control of the false discovery rate in multiple testing under dependency.** In *The Annals of Statistics, 29 (4), pp. 1165-1188.* [doi:10.1214/aos/1013699998](http://dx.doi.org/10.1214/aos/1013699998) 
+Yekutieli, Daniel and Benjamini, Yoav (2001) **The control of the false discovery rate in multiple testing under dependency.** In *The Annals of Statistics, 29 (4), pp. 1165-1188.* [doi:10.1214/aos/1013699998](http://dx.doi.org/10.1214/aos/1013699998)

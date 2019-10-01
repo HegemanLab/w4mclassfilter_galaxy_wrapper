@@ -23,12 +23,6 @@
     dataMatrix_out        '$dataMatrix_out'
     sampleMetadata_out    '$sampleMetadata_out'
     variableMetadata_out  '$variableMetadata_out'
-        > '$dataMatrix_out'.stdout
-        2> '$dataMatrix_out'.stderr
-        ;
-        cp '$dataMatrix_out' /tmp/;
-        cp '$dataMatrix_out'.stdout /tmp/;
-        cp '$dataMatrix_out'.stderr /tmp/
     ]]></command>
     <inputs>
         <param name="dataMatrix_in" format="tabular" label="Data matrix file" type="data"
@@ -683,7 +677,7 @@ Data-transformation (default = '``none``')
 	| '``log10``' - Take the log base 10 of the values in the data matrix.
 	|
 
-Data-imputation (default = '``none``')
+Data-imputation (default = '``zero``')
 	| '``none``' - Do not impute data matrix values.
 	| '``zero``' - Negative and missing values are imputed to zero.
 	| '``center``' - For each feature, negative and missing values are imputed to the median of other values.
@@ -784,13 +778,21 @@ Note for the range specification strings:
 
   - Note, however, that when the "maximum" is greater than the "minimum" for the FEATMAX range specification, then the specification is ignored.
 
+----------------------------------
+Data transformation and imputation
+----------------------------------
+
+Data may optionally be log2- or log10-transformed.
+
+Negative intensity values are always substituted with zeros.
+
+Missing intensity data values may optionally be imputed.  Missing values may be substituted with zeros (as may be appropriate for univariate analysis) or with the median for the feature (as may be appropriate for multivariate analysis).  (Note that the median feature-intensity is computed for the samples *before* variable-range filters are applied.)
+
 -----------------------------------------------------------------------------
 
 ----------------
 WORKING EXAMPLES
 ----------------
-
-.. class:: infomark
 
 -----------
 Input Files
@@ -806,8 +808,6 @@ Input Files
 | https://raw.githubusercontent.com/HegemanLab/w4mclassfilter_galaxy_wrapper/master/tools/w4mclassfilter/test-data/input_variableMetadata.tsv          |
 +------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-.. class:: infomark
-
 -------------------------------
 Running Without Range-Filtering
 -------------------------------
@@ -816,21 +816,23 @@ This example retains only samples whose 'gender' attribute is 'M'.
 
 **Input parameters**
 
-+------------------------------------+-------------------------------+
-| Input Parameter                    | Value                         |
-+====================================+===============================+
-| Names of sample-classes            | M                             |
-+------------------------------------+-------------------------------+
-| Include named classes              | filter-in                     |
-+------------------------------------+-------------------------------+
-| Column that names the sample-class | gender                        |
-+------------------------------------+-------------------------------+
-| Variable range-filters             | (Leave this field empty.)     |
-+------------------------------------+-------------------------------+
-| Data transforamtion                | none                          |
-+------------------------------------+-------------------------------+
-| Missing-value imputation           | zero                          |
-+------------------------------------+-------------------------------+
++---------------------------------------------+-------------------------------+
+| Input Parameter                             | Value                         |
++=============================================+===============================+
+| Column that names the sample-class          | gender                        |
++---------------------------------------------+-------------------------------+
+| Names of sample-classes                     | M                             |
++---------------------------------------------+-------------------------------+
+| Use 'wild-cards' or 'regular expressions'   | wild-cards                    |
++---------------------------------------------+-------------------------------+
+| Exclude/include named classes               | filter-in                     |
++---------------------------------------------+-------------------------------+
+| Variable range-filters                      | (Leave this field empty.)     |
++---------------------------------------------+-------------------------------+
+| Data transforamtion                         | none                          |
++---------------------------------------------+-------------------------------+
+| Missing-value imputation                    | center                        |
++---------------------------------------------+-------------------------------+
 
 **Expected outputs**
 
@@ -844,8 +846,6 @@ This example retains only samples whose 'gender' attribute is 'M'.
 | Variable metadata | https://raw.githubusercontent.com/HegemanLab/w4mclassfilter_galaxy_wrapper/master/tools/w4mclassfilter/test-data/expected_variableMetadata.tsv  |
 +-------------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
 
-.. class:: infomark
-
 ----------------------------
 Running With Range-Filtering
 ----------------------------
@@ -855,21 +855,23 @@ This example retains all samples (except those having zero variance for all feat
 
 **Input parameters**
 
-+------------------------------------+------------------------------------+
-| Input Parameter                    | Value                              |
-+====================================+====================================+
-| Names of sample-classes            | (Leave this field empty.)          |
-+------------------------------------+------------------------------------+
-| Include named classes              | filter-out                         |
-+------------------------------------+------------------------------------+
-| Column that names the sample-class | gender                             |
-+------------------------------------+------------------------------------+
-| Variable range-filters             | FEATMAX:20.93157:,mz:200:,rt::800  |
-+------------------------------------+------------------------------------+
-| Data transforamtion                | log2                               |
-+------------------------------------+------------------------------------+
-| Missing-value imputation           | zero                               |
-+------------------------------------+------------------------------------+
++---------------------------------------------+-----------------------------------+
+| Input Parameter                             | Value                             |
++=============================================+===================================+
+| Column that names the sample-class          | sampleMetadata                    |
++---------------------------------------------+-----------------------------------+
+| Names of sample-classes                     | HU_13[48]                         |
++---------------------------------------------+-----------------------------------+
+| Use 'wild-cards' or 'regular expressions'   | regular-expressions               |
++---------------------------------------------+-----------------------------------+
+| Exclude/include named classes               | filter-out                        |
++---------------------------------------------+-----------------------------------+
+| Variable range-filters                      | FEATMAX:20.93157:,mz:200:,rt::800 |
++---------------------------------------------+-----------------------------------+
+| Data transforamtion                         | log2                              |
++---------------------------------------------+-----------------------------------+
+| Missing-value imputation                    | zero                              |
++---------------------------------------------+-----------------------------------+
 
 **Expected outputs**
 

@@ -28,13 +28,13 @@
     ]]></command>
     <inputs>
         <param name="dataMatrix_in" format="tabular" label="Data matrix file" type="data"
-            help="variables &#10006; samples" />
+            help="data matrix, with sample names in first row and feature names in first column" />
         <param name="sampleMetadata_in" format="tabular" label="Sample metadata file" type="data"
-            help="sample metadata, one row per sample" />
+            help="sample metadata, with one row per sample" />
         <param name="variableMetadata_in" format="tabular" label="Variable metadata file" type="data"
-            help="variable metadata, one row per variable" />
+            help="variable metadata, with one row per feature" />
         <param name="classnameColumn" label="Column that names the sample-class" type="text" value = "class"
-            help="name of the column in sample metadata that has the values to be tested against the 'Names of sample-classes' input parameter - defaults to 'class'">
+            help="name of the column in sample metadata that has the values to be tested against the 'Names of sample-classes' input parameter">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -44,7 +44,7 @@
             </sanitizer>
         </param>
         <param name="sampleclassNames" label="Names of sample-classes" type="text" value = ""
-            help="comma-separated names (or regular expressions to match names) of sample-classes to filter in or out; defaults to no names">
+            help="comma-separated names (or regular expressions to match names) of sample-classes to filter in or out (Leave empty to match no names.)">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -71,17 +71,17 @@
             </sanitizer>
         </param>
         <param name="wildcards" label="Use 'wild cards' or 'regular expressions'" type="select"
-            help="'wild-cards' (the default) - use '*' and '?' to match class names; 'regular-expressions' - use regular expressions to match class names">
+            help="'wild-cards' - use '*' and '?' to match class names; &#160;&#160; 'regular-expressions' - use regular expressions to match class names">
             <option value="TRUE" selected="true">wild-cards</option>
             <option value="FALSE">regular-expressions</option>
         </param>
         <param name="inclusive" label="Exclude/include named classes" type="select"
-            help="'filter-out' (the default) - exclude only the named sample-classes; 'filter-in' - include only the named sample-classes">
+            help="'filter-out' - exclude only the named sample-classes; &#160;&#160;  'filter-in' - include only the named sample-classes">
             <option value="TRUE">filter-in</option>
             <option value="FALSE" selected="true">filter-out</option>
         </param>
         <param name="variableRangeFilter" label="Variable-range filters" type="text" value = ""
-            help="comma-separated filters, each specified as 'variableMetadataColumnName:min:max'; default is no filters.    (See help below.)">
+            help="comma-separated filters, each specified as 'variableMetadataColumnName:min:max' (leave empty for no filtering, as described in help below.)">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -93,19 +93,19 @@
             </sanitizer>
         </param>
         <param name="transformation" label="Data-transformation" type="select"
-            help="'none' (the default) - do not transform data; 'log2' - log base 2 of data; 'log10' - log base 10 of data; in all cases, negative and missing values are imputed to zero">
+            help="'none' - do not transform data; &#160;&#160;  'log2' - log base 2 of data; &#160;&#160;  'log10' - log base 10 of data; &#160;&#160;  in all cases, negative and missing values are imputed to zero">
             <option value="none" selected="true">none</option>
             <option value="log2">log2</option>
             <option value="log10">log10</option>
         </param>
         <param name="imputation" label="Imputation of missing values" type="select"
-            help="'zero' (the default) - replace missing values with zero; 'center' - replace missing values with feature-median; 'none' - perform no imputation">
+            help="'zero' - replace missing values with zero; &#160;&#160;  'center' - replace missing values with feature-median; &#160;&#160;  'none' - perform no imputation">
             <option value="zero" selected="true">zero</option>
             <option value="center">center</option>
             <option value="none">none</option>
         </param>
         <param name="order_smpl" label="Column that specifies order for samples" type="text" value = "sampleMetadata"
-            help="name of the column in sample metadata that is used to sort samples - defaults to 'sampleMetadata'">
+            help="name of the column in sample metadata that is used to sort samples">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -115,7 +115,7 @@
             </sanitizer>
         </param>
         <param name="order_vrbl" label="Column that specifies order for features" type="text" value = "variableMetadata"
-            help="name of the column in variable metadata that is used to sort features - defaults to 'variableMetadata'">
+            help="name of the column in variable metadata that is used to sort features">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -622,7 +622,7 @@ This tool also performs several operations to address several data issues that m
 - Features that are missing from either variableMetadata or dataMatrix are eliminated.
 - Features and samples that have zero variance are eliminated.
 - Samples and features have consistent order in `variableMetadata`, `sampleMetadata`, and `dataMatrix`.
-  (The column for sorting `variableMetadata` or `sampleMetadata` may be specified or defaults to the first column.)
+  (The column for sorting `variableMetadata` or `sampleMetadata` may be specified.)
 - The names of the first columns of variableMetadata and sampleMetadata are set respectively to "variableMetadata" and "sampleMetadata".
 - If desired, the values in the dataMatrix may be log-transformed.
 - If desired, each missing value in dataMatrix is replaced with zero or the median value observed for the corresponding feature.
@@ -661,7 +661,7 @@ Parameters
 ----------
 
 Data matrix file
-	| variable x sample **dataMatrix** (tabular separated values) file of the numeric data matrix, with . as decimal, and NA for missing values; the table must not contain metadata apart from row and column names; the row and column names must be identical, respectively, to the rownames of the sample metadata file and variable metadata file
+	| feature x sample **dataMatrix** (tabular separated values) file of the numeric data matrix, with period-character ('.') as decimal, and 'NA' for missing values; the table must not contain metadata apart from the required row and column names; the row and column names must be identical (with regard to both content or order) to the respective rownames of the sample metadata file and variable metadata file
 	|
 
 Sample metadata file

@@ -50,7 +50,7 @@ This tool performs several operations to address several data issues that may im
 - Samples that are missing from either sampleMetadata or dataMatrix are eliminated.
 - Features that are missing from either variableMetadata or dataMatrix are eliminated.
 - Features and samples that have zero variance are eliminated.
-- Samples and features are sorted alphabetically in rows and columns of variableMetadata, sampleMetadata, and dataMatrix.
+- Samples and features are sorted as specified or, by default, alphabetically.
 - By default, the names of the first columns of variableMetadata and sampleMetadata are set respectively to "variableMetadata" and "sampleMetadata".
 - Negative intensities are replaced by zeros.
 - If desired, the values in the dataMatrix may be log-transformed.
@@ -109,6 +109,10 @@ The W4m Data Subset tool may be applied several times sequentially; for example,
   - *zero* - substitue zero for missing values in the data matrix
   - *center* - for missing values in the data matrix, substitute the median intensity for the feature (for samples where it is not missing).
   - In all cases, negative values are substituted with zeros.
+- Column that specifies order for samples (default = 'sampleMetadata')
+  - name of the column in sample metadata that is used to sort samples
+- Column that specifies order for features (default = 'variableMetadata')
+  - name of the column in variable metadata that is used to sort samples
 
 ## Output files
 
@@ -120,6 +124,16 @@ The W4m Data Subset tool may be applied several times sequentially; for example,
 	* (tabular separated values) file identical to the **dataMatrix** file given as an input argument, excepting lacking rows for variables (xC-MS features) that have been filtered out (because of zero variance) and columns that have been filtered out (by the sample-class filter or because of zero variance)
 
 ## NEWS
+
+### Changes in version 0.98.14
+
+#### New features
+
+* Enhancement [https://github.com/HegemanLab/w4mclassfilter\_galaxy\_wrapper/issues/6](https://github.com/HegemanLab/w4mclassfilter_galaxy_wrapper/issues/6) - "Provide sort options for features and samples".
+
+#### Internal modifications
+
+* Use v0.98.14 of the [w4mclassfilter bioconda package](https://bioconda.github.io/recipes/w4mclassfilter/README.html).
 
 ### Changes in version 0.98.13
 

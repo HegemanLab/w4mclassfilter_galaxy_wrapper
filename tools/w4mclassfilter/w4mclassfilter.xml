@@ -1,10 +1,10 @@
-<tool id="w4mclassfilter" name="W4m Data Subset" version="0.98.13">
+<tool id="w4mclassfilter" name="W4m Data Subset" version="0.98.14">
     <description>Filter W4m data by values or metadata</description>
     <!-- Here is the hyphenation standard that I *try* to apply consistently in my documentation: http://www.sandranoonan.com/dont-let-hyphenation-drive-crazy/ -->
     <requirements>
         <requirement type="package" version="3.6.1">r-base</requirement>
         <requirement type="package" version="1.1_5">r-batch</requirement>
-        <requirement type="package" version="0.98.13">w4mclassfilter</requirement>
+        <requirement type="package" version="0.98.14">w4mclassfilter</requirement>
     </requirements>
     <command detect_errors="aggressive"><![CDATA[
     unset R_HOME;
@@ -23,6 +23,8 @@
     dataMatrix_out        '$dataMatrix_out'
     sampleMetadata_out    '$sampleMetadata_out'
     variableMetadata_out  '$variableMetadata_out'
+    order_vrbl            '$order_vrbl'
+    order_smpl            '$order_smpl'
     ]]></command>
     <inputs>
         <param name="dataMatrix_in" format="tabular" label="Data matrix file" type="data"
@@ -101,6 +103,26 @@
             <option value="zero" selected="true">zero</option>
             <option value="center">center</option>
             <option value="none">none</option>
+        </param>
+        <param name="order_smpl" label="Column that specifies order for samples" type="text" value = "sampleMetadata"
+            help="name of the column in sample metadata that is used to sort samples - defaults to 'sampleMetadata'">
+            <sanitizer>
+                <valid initial="string.letters">
+                    <add preset="string.digits"/>
+                    <add value="&#46;"    /> <!-- dot, period -->
+                    <add value="&#95;"    /> <!-- underscore -->
+                </valid>
+            </sanitizer>
+        </param>
+        <param name="order_vrbl" label="Column that specifies order for features" type="text" value = "variableMetadata"
+            help="name of the column in variable metadata that is used to sort features - defaults to 'variableMetadata'">
+            <sanitizer>
+                <valid initial="string.letters">
+                    <add preset="string.digits"/>
+                    <add value="&#46;"    /> <!-- dot, period -->
+                    <add value="&#95;"    /> <!-- underscore -->
+                </valid>
+            </sanitizer>
         </param>
     </inputs>
     <outputs>
@@ -552,7 +574,7 @@ The *w4mclassfilter* package (which is used by the W4m Data Subset tool) is avai
 
 **Tool updates**
 
-See the **NEWS** section at the bottom of this page
+See https://github.com/HegemanLab/w4mclassfilter_galaxy_wrapper#news
 
 ---------------------------------------------------
 
@@ -599,7 +621,8 @@ This tool also performs several operations to address several data issues that m
 - Samples that are missing from either sampleMetadata or dataMatrix are eliminated.
 - Features that are missing from either variableMetadata or dataMatrix are eliminated.
 - Features and samples that have zero variance are eliminated.
-- Samples and features are sorted alphabetically in rows and columns of dataMatrix and in rows of variableMetadata and sampleMetadata.
+- Samples and features have consistent order in `variableMetadata`, `sampleMetadata`, and `dataMatrix`.
+  (The column for sorting `variableMetadata` or `sampleMetadata` may be specified or defaults to the first column.)
 - The names of the first columns of variableMetadata and sampleMetadata are set respectively to "variableMetadata" and "sampleMetadata".
 - If desired, the values in the dataMatrix may be log-transformed.
 - If desired, each missing value in dataMatrix is replaced with zero or the median value observed for the corresponding feature.
@@ -683,6 +706,13 @@ Data-imputation (default = '``zero``')
 	| '``center``' - For each feature, negative and missing values are imputed to the median of other values.
 	|
 
+Column that specifies order for samples (default = 'sampleMetadata')
+	| name of the column in **sampleMetadata** that is used to sort samples; only letters, digits, periods, and underscores are permitted.
+	|
+
+Column that specifies order for features (default = 'variableMetadata')
+	| name of the column in **variableMetadata** that is used to sort features; only letters, digits, periods, and underscores are permitted.
+	|
 
 ------------
 Output files
@@ -833,6 +863,10 @@ This example retains only samples whose 'gender' attribute is 'M'.
 +---------------------------------------------+-------------------------------+
 | Missing-value imputation                    | center                        |
 +---------------------------------------------+-------------------------------+
+| Sample-sort column                          | sampleMetadata                |
++---------------------------------------------+-------------------------------+
+| Feature-sort column                         | variableMetadata              |
++---------------------------------------------+-------------------------------+
 
 **Expected outputs**
 
@@ -871,6 +905,10 @@ This example retains all samples (except those having zero variance for all feat
 | Data transforamtion                         | log2                              |
 +---------------------------------------------+-----------------------------------+
 | Missing-value imputation                    | zero                              |
++---------------------------------------------+-----------------------------------+
+| Sample-sort column                          | sampleMetadata                    |
++---------------------------------------------+-----------------------------------+
+| Feature-sort column                         | variableMetadata                  |
 +---------------------------------------------+-----------------------------------+
 
 **Expected outputs**

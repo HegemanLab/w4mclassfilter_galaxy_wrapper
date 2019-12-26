@@ -106,6 +106,7 @@ samplenameColumn <- as.character(argVc["samplenameColumn"])
 
 order_smpl <- as.character(argVc["order_smpl"])
 order_vrbl <- as.character(argVc["order_vrbl"])
+centering <- as.character(argVc["centering"])
 
 variable_range_filter <- as.character(argVc["variable_range_filter"])
 variable_range_filter <- strsplit(x = variable_range_filter, split = ",", fixed = TRUE)[[1]]
@@ -165,6 +166,7 @@ result <- w4m_filter_by_sample_class(
 , samplename_column     = samplenameColumn
 , order_vrbl            = order_vrbl
 , order_smpl            = order_smpl
+, centering             = centering
 , variable_range_filter = variable_range_filter
 , failure_action        = my_print
 , data_imputation       = my_transformation_and_imputation

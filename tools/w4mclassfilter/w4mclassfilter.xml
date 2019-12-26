@@ -1,10 +1,10 @@
-<tool id="w4mclassfilter" name="W4m Data Subset" version="0.98.14">
+<tool id="w4mclassfilter" name="W4m Data Subset" version="0.98.17">
     <description>Filter W4m data by values or metadata</description>
     <!-- Here is the hyphenation standard that I *try* to apply consistently in my documentation: http://www.sandranoonan.com/dont-let-hyphenation-drive-crazy/ -->
     <requirements>
-        <requirement type="package" version="3.6.1">r-base</requirement>
+        <requirement type="package" version="3.6.2">r-base</requirement>
         <requirement type="package" version="1.1_5">r-batch</requirement>
-        <requirement type="package" version="0.98.14">w4mclassfilter</requirement>
+        <requirement type="package" version="0.98.17">w4mclassfilter</requirement>
     </requirements>
     <command detect_errors="aggressive"><![CDATA[
     unset R_HOME;
@@ -25,6 +25,7 @@
     variableMetadata_out  '$variableMetadata_out'
     order_vrbl            '$order_vrbl'
     order_smpl            '$order_smpl'
+    centering             '$centering'
     ]]></command>
     <inputs>
         <param name="dataMatrix_in" format="tabular" label="Data matrix file" type="data"
@@ -111,6 +112,7 @@
                     <add preset="string.digits"/>
                     <add value="&#46;"    /> <!-- dot, period -->
                     <add value="&#95;"    /> <!-- underscore -->
+                    <add value="&#44;"    /> <!-- comma -->
                 </valid>
             </sanitizer>
         </param>
@@ -121,8 +123,16 @@
                     <add preset="string.digits"/>
                     <add value="&#46;"    /> <!-- dot, period -->
                     <add value="&#95;"    /> <!-- underscore -->
+                    <add value="&#44;"    /> <!-- comma -->
                 </valid>
             </sanitizer>
+        </param>
+        <param name="centering" label="Compute centers for classes (e.g., treatments)" type="select"
+			help="'none' - do not compute centers for classes/treatments; &#160;&#160;  'centroid' - for each class, compute the mean for each feature; &#160;&#160;  'median' - for each class, compute the median for each feature; &#160;&#160;  'medoid' - for each class, select only the most central member">
+            <option value="none" selected="true">none</option>
+            <option value="centroid">centroid</option>
+            <option value="median">median</option>
+            <option value="medoid">medoid</option>
         </param>
     </inputs>
     <outputs>

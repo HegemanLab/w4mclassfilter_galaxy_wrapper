@@ -828,6 +828,22 @@ Negative intensity values are always substituted with zeros.
 
 Missing intensity data values may optionally be imputed.  Missing values may be substituted with zeros (as may be appropriate for univariate analysis) or with the median for the feature (as may be appropriate for multivariate analysis).  (Note that the median feature-intensity is computed for the samples *before* variable-range filters are applied.)
 
+-----------------------------------------
+Optional Computation of Treatment Centers
+-----------------------------------------
+
+A "center" for each treatment may be computed in lieu of all the samples for each treatment.
+
+- 'none' - Return all samples; do not compute centers.
+- 'centroid' - For each treatment, return only the centroid (the treatment-center computed as the mean intensity for each feature).
+- 'median' - For each treatment, return only the treatment-center computed as the median intensity for each feature.
+- 'medoid' - For each treatment, return only the medoid (the sample most similar to the other samples for that treatment).
+
+The medoid is computed as the sample having the smallest sum of its distances from other samples in the treatment.
+
+- Principal components are uncorrelated, so distances are computed in principal-components space to minimize the distortion of computed distances by correlated features.
+- The distances are used to identify the medoid using code adapted from https://www.biostars.org/p/11987/#11989
+
 -----------------------------------------------------------------------------
 
 ----------------

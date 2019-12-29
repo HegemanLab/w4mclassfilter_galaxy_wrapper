@@ -23,8 +23,16 @@ options(stringsAsFactors = FALSE)
 
 suppressMessages(library(w4mclassfilter))
 
-if(packageVersion("w4mclassfilter") < "0.98.12")
-    stop("Please use 'w4mclassfilter' versions of 0.98.12 and above")
+expected_version <- "0.98.18"
+actual_version <- packageVersion("w4mclassfilter")
+if(packageVersion("w4mclassfilter") < expected_version) {
+    stop(
+         sprintf(
+             "Unrecoverable error: Version %s of the 'w4mclassfilter' R package was loaded instead of expected version %s",
+             actual_version, expected_version
+         )
+    )
+}
 
 ## constants
 ##----------

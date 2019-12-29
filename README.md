@@ -125,6 +125,19 @@ The W4m Data Subset tool may be applied several times sequentially; for example,
 
 ## NEWS
 
+### Changes in version 0.98.18
+
+#### New features
+
+* Enhancement: Added option "compute center for each treatment" [https://github.com/HegemanLab/w4mclassfilter/issues/6](https://github.com/HegemanLab/w4mclassfilter/issues/6).
+* Enhancement: Added option "enable sorting on multiple columns of metadata" [https://github.com/HegemanLab/w4mclassfilter/issues/7](https://github.com/HegemanLab/w4mclassfilter/issues/7).
+
+#### Internal modifications
+
+* Use v0.98.18 of the [w4mclassfilter bioconda package](https://bioconda.github.io/recipes/w4mclassfilter/README.html).
+
+### (Version numbers 0.98.15-0.98.17 skipped)
+
 ### Changes in version 0.98.14
 
 #### New features

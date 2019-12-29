@@ -1,10 +1,10 @@
-<tool id="w4mclassfilter" name="W4m Data Subset" version="0.98.17">
+<tool id="w4mclassfilter" name="W4m Data Subset" version="0.98.18">
     <description>Filter W4m data by values or metadata</description>
     <!-- Here is the hyphenation standard that I *try* to apply consistently in my documentation: http://www.sandranoonan.com/dont-let-hyphenation-drive-crazy/ -->
     <requirements>
         <requirement type="package" version="3.6.2">r-base</requirement>
         <requirement type="package" version="1.1_5">r-batch</requirement>
-        <requirement type="package" version="0.98.17">w4mclassfilter</requirement>
+        <requirement type="package" version="0.98.18">w4mclassfilter</requirement>
     </requirements>
     <command detect_errors="aggressive"><![CDATA[
     unset R_HOME;

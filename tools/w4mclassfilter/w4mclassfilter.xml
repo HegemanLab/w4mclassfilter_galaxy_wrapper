@@ -754,6 +754,13 @@ Column that specifies order for features (default = 'variableMetadata')
 	| name of the column in **variableMetadata** that is used to sort features; only letters, digits, periods, and underscores are permitted.
 	|
 
+Option to compute class/treatment-centers (default = 'none')
+	| '``none``' - Return all samples; do not compute centers for classes/treatments.
+	| '``centroid``' - For each treatment, return only the centroid (the treatment-center computed as the mean intensity for each feature).
+	| '``median``' - For each treatment, return only the treatment-center computed as the median intensity for each feature.
+	| '``medoid``' - For each treatment, return only the medoid (the sample most similar to the other samples for that treatment)..
+	|
+
 ------------
 Output files
 ------------

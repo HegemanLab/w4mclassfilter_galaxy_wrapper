@@ -8,24 +8,30 @@
     </requirements>
     <command detect_errors="aggressive"><![CDATA[
     unset R_HOME;
-    Rscript $__tool_directory__/w4mclassfilter_wrapper.R
-    dataMatrix_in         '$dataMatrix_in'
-    sampleMetadata_in     '$sampleMetadata_in'
-    variableMetadata_in   '$variableMetadata_in'
-    sampleclassNames      '$sampleclassNames'
-    inclusive             '$inclusive'
-    wildcards             '$wildcards'
-    classnameColumn       '$classnameColumn'
-    samplenameColumn      'sampleMetadata'
-    variable_range_filter '$variableRangeFilter'
-    transformation        '$transformation'
-    imputation            '$imputation'
-    dataMatrix_out        '$dataMatrix_out'
-    sampleMetadata_out    '$sampleMetadata_out'
-    variableMetadata_out  '$variableMetadata_out'
-    order_vrbl            '$order_vrbl'
-    order_smpl            '$order_smpl'
-    centering             '$centering'
+    if [ '$centering' == 'medoid' -a '$imputation' == 'none' ]; then
+    (echo 'medoid' centering may not be chosen with imputation 'none' 1>&2);
+        [ ! 1 ];
+    else
+        Rscript
+        $__tool_directory__/w4mclassfilter_wrapper.R
+        dataMatrix_in         '$dataMatrix_in'
+        sampleMetadata_in     '$sampleMetadata_in'
+        variableMetadata_in   '$variableMetadata_in'
+        sampleclassNames      '$sampleclassNames'
+        inclusive             '$inclusive'
+        wildcards             '$wildcards'
+        classnameColumn       '$classnameColumn'
+        samplenameColumn      'sampleMetadata'
+        variable_range_filter '$variableRangeFilter'
+        transformation        '$transformation'
+        imputation            '$imputation'
+        dataMatrix_out        '$dataMatrix_out'
+        sampleMetadata_out    '$sampleMetadata_out'
+        variableMetadata_out  '$variableMetadata_out'
+        order_vrbl            '$order_vrbl'
+        order_smpl            '$order_smpl'
+        centering             '$centering';
+    fi
     ]]></command>
     <inputs>
         <param name="dataMatrix_in" format="tabular" label="Data matrix file" type="data"
@@ -128,7 +134,7 @@
             </sanitizer>
         </param>
         <param name="centering" label="Compute centers for classes (e.g., treatments)" type="select"
-			help="'none' - do not compute centers for classes/treatments; &#160;&#160;  'centroid' - for each class, compute the mean for each feature; &#160;&#160;  'median' - for each class, compute the median for each feature; &#160;&#160;  'medoid' - for each class, select only the most central member">
+            help="'none' - do not compute centers for classes/treatments; &#160;&#160;  'centroid' - for each class, compute the mean for each feature; &#160;&#160;  'median' - for each class, compute the median for each feature; &#160;&#160;  'medoid' - for each class, select only the most central member">
             <option value="none" selected="true">none</option>
             <option value="centroid">centroid</option>
             <option value="median">median</option>
@@ -204,7 +210,7 @@
         </output>
       </test>
       <!-- test 2 -->
-	  <test>
+      <test>
         <param name="dataMatrix_in" value="input_dataMatrix.tsv"/>
         <param name="sampleMetadata_in" value="input_sampleMetadata.tsv"/>
         <param name="variableMetadata_in" value="input_variableMetadata.tsv"/>
@@ -213,13 +219,13 @@
         <param name="inclusive" value="TRUE"/>
         <param name="wildcards" value="FALSE"/>
         <param name="classnameColumn" value="sampleMetadata"/>
-		<!-- test that variableRangeFilter works with tranformation -->
-		<param name="variableRangeFilter" value="FEATMAX:6.30103:,mz:200:,rt::800"/>
+        <!-- test that variableRangeFilter works with tranformation -->
+        <param name="variableRangeFilter" value="FEATMAX:6.30103:,mz:200:,rt::800"/>
         <param name="transformation" value="log10"/>
         <param name="imputation" value="zero"/>
         <output name="dataMatrix_out" md5="5644d2ea01d072ee1d0c40e29e9d0089">
           <assert_contents>
-			<has_text text="5.8733671" />
+            <has_text text="5.8733671" />
           </assert_contents>
         </output>
         <output name="sampleMetadata_out">

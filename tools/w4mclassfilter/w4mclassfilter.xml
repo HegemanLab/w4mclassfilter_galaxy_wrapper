@@ -100,7 +100,7 @@
             </sanitizer>
         </param>
         <param name="transformation" label="Data-transformation" type="select"
-            help="'none' - do not transform data; &#160;&#160;  'log2' - log base 2 of data; &#160;&#160;  'log10' - log base 10 of data; &#160;&#160;  in all cases, negative and missing values are imputed to zero">
+            help="'none' - do not transform data; &#160;&#160;  'log2' - log base 2 of data; &#160;&#160;  'log10' - log base 10 of data; &#160;&#160;  In all cases, negative values become missing values.">
             <option value="none" selected="true">none</option>
             <option value="log2">log2</option>
             <option value="log10">log10</option>
@@ -534,7 +534,7 @@
         <param name="wildcards" value="TRUE"/>
         <param name="inclusive" value="TRUE"/>
         <param name="imputation" value="none"/>
-        <output name="dataMatrix_out" md5="cc9ab8bdb70b68b43b19b7327d285166">
+        <output name="dataMatrix_out" md5="6200dfa77d09c56e434f80b1a23b3393">
           <assert_contents>
             <not_has_text text="HU_204" />
             <has_text text="NA" />
@@ -558,7 +558,7 @@
         <param name="wildcards" value="TRUE"/>
         <param name="inclusive" value="TRUE"/>
         <param name="imputation" value="center"/>
-        <output name="dataMatrix_out" md5="75a4802bb8887709e4d4dec8c2c3d3cf">
+        <output name="dataMatrix_out" md5="a404278c5c9ffd5bdadf346c4f8a0184">
           <assert_contents>
             <not_has_text text="HU_204" />
             <not_has_text text="NA" />
@@ -671,6 +671,7 @@ This tool also performs several operations to address several data issues that m
   (The column for sorting `variableMetadata` or `sampleMetadata` may be specified.)
 - The names of the first columns of variableMetadata and sampleMetadata are set respectively to "variableMetadata" and "sampleMetadata".
 - If desired, the values in the dataMatrix may be log-transformed.
+- Negative values become missing values.
 - If desired, each missing value in dataMatrix is replaced with zero or the median value observed for the corresponding feature.
 
 This tool may be applied several times sequentially, which may be useful for:
@@ -867,7 +868,7 @@ Data transformation and imputation
 
 Data may optionally be log2- or log10-transformed.
 
-Negative intensity values are always substituted with zeros.
+Negative values are always substituted with missing values before imputation, even when no transformation is chosen.
 
 Missing intensity data values may optionally be imputed.  Missing values may be substituted with zeros (as may be appropriate for univariate analysis) or with the median for the feature (as may be appropriate for multivariate analysis).  (Note that the median feature-intensity is computed for the samples *before* variable-range filters are applied.)
 
@@ -1012,7 +1013,7 @@ This example retains only the samples that are medoids for their gender.
 +---------------------------------------------+-----------------------------------+
 | Names of sample-classes                     | (Leave this field empty.)         |
 +---------------------------------------------+-----------------------------------+
-| Use 'wild-cards' or 'regular expressions'   | regular-expressions               |
+| Use 'wild-cards' or 'regular expressions'   | wild-cards                        |
 +---------------------------------------------+-----------------------------------+
 | Exclude/include named classes               | filter-out                        |
 +---------------------------------------------+-----------------------------------+

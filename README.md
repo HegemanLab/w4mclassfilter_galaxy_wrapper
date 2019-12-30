@@ -51,8 +51,8 @@ This tool performs several operations to address several data issues that may im
 - Features that are missing from either variableMetadata or dataMatrix are eliminated.
 - Features and samples that have zero variance are eliminated.
 - Samples and features are sorted as specified or, by default, alphabetically.
-- By default, the names of the first columns of variableMetadata and sampleMetadata are set respectively to "variableMetadata" and "sampleMetadata".
-- Negative intensities are replaced by zeros.
+- The names of the first columns of variableMetadata and sampleMetadata are set respectively to "variableMetadata" and "sampleMetadata".
+- Negative intensities become missing values.
 - If desired, the values in the dataMatrix may be log-transformed.
 - If desired, each missing value in dataMatrix is replaced with zero or the median value observed for the corresponding feature.
 
@@ -108,7 +108,7 @@ The W4m Data Subset tool may be applied several times sequentially; for example,
   - *none* - do not impute missing data matrix values
   - *zero* - substitue zero for missing values in the data matrix
   - *center* - for missing values in the data matrix, substitute the median intensity for the feature (for samples where it is not missing).
-  - In all cases, negative values are substituted with zeros.
+  - Negative values are always substituted with missing values before imputation, even when `none` is chosen.
 - Column that specifies order for samples (default = 'sampleMetadata')
   - name of the column in sample metadata that is used to sort samples
 - Column that specifies order for features (default = 'variableMetadata')
@@ -128,6 +128,7 @@ The W4m Data Subset tool may be applied several times sequentially; for example,
 * dataMatrix
 	* (tabular separated values) file identical to the **dataMatrix** file given as an input argument, excepting lacking rows for variables (xC-MS features) that have been filtered out (because of zero variance) and columns that have been filtered out (by the sample-class filter or because of zero variance)
 
+
 ## NEWS
 
 ### Changes in version 0.98.18
@@ -136,12 +137,15 @@ The W4m Data Subset tool may be applied several times sequentially; for example,
 
 * Enhancement: Added option "compute center for each treatment" [https://github.com/HegemanLab/w4mclassfilter/issues/6](https://github.com/HegemanLab/w4mclassfilter/issues/6).
 * Enhancement: Added option "enable sorting on multiple columns of metadata" [https://github.com/HegemanLab/w4mclassfilter/issues/7](https://github.com/HegemanLab/w4mclassfilter/issues/7).
+* Enhancement: Added option "always treat negative values as missing values" [https://github.com/HegemanLab/w4mclassfilter\_galaxy\_wrapper/issues/7](https://github.com/HegemanLab/w4mclassfilter_galaxy_wrapper/issues/7).
 
 #### Internal modifications
 
 * Use v0.98.18 of the [w4mclassfilter bioconda package](https://bioconda.github.io/recipes/w4mclassfilter/README.html).
 
+
 ### (Version numbers 0.98.15-0.98.17 skipped)
+
 
 ### Changes in version 0.98.14
 

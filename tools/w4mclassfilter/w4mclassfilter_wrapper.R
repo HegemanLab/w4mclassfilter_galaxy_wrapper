@@ -124,6 +124,8 @@ variable_range_filter <- strsplit(x = variable_range_filter, split = ",", fixed 
 ## -----------------------------
 my_transformation_and_imputation <- if (transformation == "log10") {
   function(m) {
+    # convert negative intensities to missing values
+    m[m < 0] <- NA
     if (!is.matrix(m))
       stop("Cannot transform and impute data - the supplied data is not in matrix form")
     if (nrow(m) == 0)
@@ -139,6 +141,8 @@ my_transformation_and_imputation <- if (transformation == "log10") {
   }
 } else if (transformation == "log2") {
   function(m) {
+    # convert negative intensities to missing values
+    m[m < 0] <- NA
     if (!is.matrix(m))
       stop("Cannot transform and impute data - the supplied data is not in matrix form")
     if (nrow(m) == 0)
@@ -153,8 +157,21 @@ my_transformation_and_imputation <- if (transformation == "log10") {
     return ( my_imputation_function(m) )
   }
 } else {
-  # use the method from the w4mclassfilter class
-  my_imputation_function
+  function(m) {
+    # convert negative intensities to missing values
+    m[m < 0] <- NA
+    if (!is.matrix(m))
+      stop("Cannot transform and impute data - the supplied data is not in matrix form")
+    if (nrow(m) == 0)
+      stop("Cannot transform and impute data - data matrix has no rows")
+    if (ncol(m) == 0)
+      stop("Cannot transform and impute data - data matrix has no columns")
+    suppressWarnings({
+      # suppress warnings here since non-positive values will produce NaN's that will be fixed in the next step
+      m[is.na(m)] <- NA
+    })
+    return ( my_imputation_function(m) )
+  }
 }
 
 ##------------------------------

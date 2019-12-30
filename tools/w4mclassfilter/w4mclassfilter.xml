@@ -566,6 +566,36 @@
           </assert_contents>
         </output>
       </test>
+      <!-- test 12 - select medoid for class -->
+      <test>
+        <param name="dataMatrix_in" value="input_dataMatrix.tsv"/>
+        <param name="sampleMetadata_in" value="input_sampleMetadata.tsv"/>
+        <param name="variableMetadata_in" value="input_variableMetadata.tsv"/>
+        <param name="classnameColumn" value="gender"/>
+        <param name="sampleclassNames" value=""/>
+        <param name="wildcards" value="TRUE"/>
+        <param name="inclusive" value="FALSE"/>
+        <param name="imputation" value="zero"/>
+        <param name="order_vrbl" value="rt"/>
+        <param name="order_smpl" value="gender"/>
+        <param name="centering" value="medoid"/>
+        <output name="dataMatrix_out" md5="c91bbfbf30004fa24b05a67ec479bfb1">
+          <assert_contents>
+            <not_has_text text="1013302" />
+            <has_text text="4763576" />
+            <has_text text="2003278" />
+            <has_text text="26222916" />
+          </assert_contents>
+        </output>
+        <output name="sampleMetadata_out">
+          <assert_contents>
+            <not_has_text text="HU_099" />
+            <not_has_text text="HU_185" />
+            <has_text text="HU_110" />
+            <has_text text="HU_078" />
+          </assert_contents>
+        </output>
+      </test>
     </tests>
     <help><![CDATA[
 
@@ -893,6 +923,8 @@ This example retains only samples whose 'gender' attribute is 'M'.
 +---------------------------------------------+-------------------------------+
 | Feature-sort column                         | variableMetadata              |
 +---------------------------------------------+-------------------------------+
+| Compute centers for classes                 | none                          |
++---------------------------------------------+-------------------------------+
 
 **Expected outputs**
 
@@ -936,6 +968,8 @@ This example retains all samples (except those having zero variance for all feat
 +---------------------------------------------+-----------------------------------+
 | Feature-sort column                         | variableMetadata                  |
 +---------------------------------------------+-----------------------------------+
+| Compute centers for classes                 | none                              |
++---------------------------------------------+-----------------------------------+
 
 **Expected outputs**
 
@@ -948,6 +982,50 @@ This example retains all samples (except those having zero variance for all feat
 +-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
 | Variable metadata | https://raw.githubusercontent.com/HegemanLab/w4mclassfilter_galaxy_wrapper/master/tools/w4mclassfilter/test-data/rangefilter_variableMetadata.tsv |
 +-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+
+--------------------------------
+Running With Treatment-Centering
+--------------------------------
+
+This example retains only the samples that are medoids for their gender.
+
+**Input parameters**
+
++---------------------------------------------+-----------------------------------+
+| Input Parameter                             | Value                             |
++=============================================+===================================+
+| Column that names the sample-class          | gender                            |
++---------------------------------------------+-----------------------------------+
+| Names of sample-classes                     | (Leave this field empty.)         |
++---------------------------------------------+-----------------------------------+
+| Use 'wild-cards' or 'regular expressions'   | regular-expressions               |
++---------------------------------------------+-----------------------------------+
+| Exclude/include named classes               | filter-out                        |
++---------------------------------------------+-----------------------------------+
+| Variable range-filters                      | (Leave this field empty.)         |
++---------------------------------------------+-----------------------------------+
+| Data transforamtion                         | none                              |
++---------------------------------------------+-----------------------------------+
+| Missing-value imputation                    | zero                              |
++---------------------------------------------+-----------------------------------+
+| Sample-sort column                          | gender                            |
++---------------------------------------------+-----------------------------------+
+| Feature-sort column                         | rt                                |
++---------------------------------------------+-----------------------------------+
+| Compute centers for classes                 | medoid                            |
++---------------------------------------------+-----------------------------------+
+
+**Expected outputs**
+
++-------------------+----------------------------------------------------------------------------------------------------------+
+| Expected Output   | Download from URL                                                                                        |
++===================+==========================================================================================================+
+| Data matrix       | https://raw.githubusercontent.com/HegemanLab/w4mclassfilter/master/tests/testthat/exp_cent_medoid_dm.tsv |
++-------------------+----------------------------------------------------------------------------------------------------------+
+| Sample metadata   | https://raw.githubusercontent.com/HegemanLab/w4mclassfilter/master/tests/testthat/exp_cent_medoid_sm.tsv |
++-------------------+----------------------------------------------------------------------------------------------------------+
+| Variable metadata | https://raw.githubusercontent.com/HegemanLab/w4mclassfilter/master/tests/testthat/exp_cent_medoid_vm.tsv |
++-------------------+----------------------------------------------------------------------------------------------------------+
     ]]></help>
     <citations>
         <!-- Giacomoni_2014 W4m 2.5 -->

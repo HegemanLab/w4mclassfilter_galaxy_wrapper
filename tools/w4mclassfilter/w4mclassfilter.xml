@@ -1,5 +1,5 @@
 <tool id="w4mclassfilter" name="W4m Data Subset" version="0.98.18">
-    <description>Filter W4m data by values or metadata</description>
+    <description>Filter W4M data by values or metadata</description>
     <!-- Here is the hyphenation standard that I *try* to apply consistently in my documentation: http://www.sandranoonan.com/dont-let-hyphenation-drive-crazy/ -->
     <requirements>
         <requirement type="package" version="3.6.2">r-base</requirement>
@@ -134,7 +134,7 @@
             </sanitizer>
         </param>
         <param name="centering" label="Compute centers for classes (e.g., treatments)" type="select"
-            help="'none' - do not compute centers for classes/treatments; &#160;&#160;  'centroid' - for each class, compute the mean for each feature; &#160;&#160;  'median' - for each class, compute the median for each feature; &#160;&#160;  'medoid' - for each class, select only the most central member">
+            help="'none' - do not compute centers for classes/treatments; &#160;&#160;  'centroid' - for each class, compute the mean for each feature; &#160;&#160;  'median' - for each class, compute the median for each feature; &#160;&#160;  'medoid' - for each class, select only the most central member ('imputation of missing values' must be set to 'zero' or 'center')">
             <option value="none" selected="true">none</option>
             <option value="centroid">centroid</option>
             <option value="median">median</option>
@@ -613,7 +613,7 @@
 
 **R package**
 
-The *w4mclassfilter* package (which is used by the W4m Data Subset tool) is available from the Hegeman lab github repository (https://github.com/HegemanLab/w4mclassfilter/releases).
+The *w4mclassfilter* package (which is used by the W4M Data Subset tool) is available from the Hegeman lab github repository (https://github.com/HegemanLab/w4mclassfilter/releases).
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -625,7 +625,7 @@ See https://github.com/HegemanLab/w4mclassfilter_galaxy_wrapper#news
 ---------------------------------------------------
 
 ===========================================================
-"W4m Data Subset" - Filter Workflow4Metabolomics data files
+"W4M Data Subset" - Filter Workflow4Metabolomics data files
 ===========================================================
 
 ----------
@@ -638,7 +638,7 @@ Data for a sample are collected as MS intensities, each of which is associated w
 Ideally, features would be sufficiently reproducible among sample-runs to distinguish features that are commmon among samples from those that differ.
 
 The chromatographic retention-time for a chemical can vary from one chromatography run to the next.
-Workflow4Metabolomics (W4m, [Giacomoni *et al.*, 2014, Guitton *et al.* 2017]) is a "flavor" of Galaxy that uses the XCMS preprocessing tools for "retention-time correction" to align features among samples.
+Workflow4Metabolomics (W4M, [Giacomoni *et al.*, 2014, Guitton *et al.* 2017]) is a "flavor" of Galaxy that uses the XCMS preprocessing tools for "retention-time correction" to align features among samples.
 Features may be better aligned if pooled samples and blanks are included.
 
 Multivariate statistical techniques may be used to discover clusters of similar samples (Th]]>&#233;<![CDATA[venot *et al.*, 2015).
@@ -651,9 +651,9 @@ However, once retention-time alignment of features has been achieved among sampl
 Description
 -----------
 
-The **W4m Data Subset** tool **selects subsets of samples, features, or data values** for further analysis.
+The **W4M Data Subset** tool **selects subsets of samples, features, or data values** for further analysis.
 
-- The tool takes as input the data matrix, sample metadata, and variable metadata datasets produced by W4m's XCMS [Smith *et al.*, 2006] and CAMERA [Kuhl *et al.*, 2012] tools.
+- The tool takes as input the data matrix, sample metadata, and variable metadata datasets produced by W4M's XCMS [Smith *et al.*, 2006] and CAMERA [Kuhl *et al.*, 2012] tools.
 - The tool produces the same trio of output datasets, modified as follows.
 
 This tool can perform several operations to reduce the number samples or features to be analyzed (although **this should be done only in a statistically sound manner** consistent with the nature of the experiment):
@@ -691,15 +691,15 @@ This tool can be used at any point downstream of Preprocessing.
 Input files
 -----------
 
-+---------------------------+------------+
-| File                      |   Format   |
-+===========================+============+
-|     Data matrix           |   tabular  |
-+---------------------------+------------+
-|     Sample metadata       |   tabular  |
-+---------------------------+------------+
-|     Variable metadata     |   tabular  |
-+---------------------------+------------+
++------------------------+-------------------------------------------+------------+
+| File                   | Contents                                  |   Format   |
++========================+===========================================+============+
+|     Data matrix        | per-feature, per-sample m/z intensities   |   tabular  |
++------------------------+-------------------------------------------+------------+
+|     Sample metadata    | metadata for samples                      |   tabular  |
++------------------------+-------------------------------------------+------------+
+|     Variable metadata  | metadata for features                     |   tabular  |
++------------------------+-------------------------------------------+------------+
 
 
 ----------
@@ -746,7 +746,7 @@ Data-transformation (default = '``none``')
 	| '``log10``' - Take the log base 10 of the values in the data matrix.
 	|
 
-Data-imputation (default = '``zero``')
+Imputation of missing values (default = '``zero``')
 	| '``none``' - Do not impute data matrix values.
 	| '``zero``' - Negative and missing values are imputed to zero.
 	| '``center``' - For each feature, negative and missing values are imputed to the median of other values.
@@ -764,7 +764,7 @@ Option to compute class/treatment-centers (default = 'none')
 	| '``none``' - Return all samples; do not compute centers for classes/treatments.
 	| '``centroid``' - For each treatment, return only the centroid (the treatment-center computed as the mean intensity for each feature).
 	| '``median``' - For each treatment, return only the treatment-center computed as the median intensity for each feature.
-	| '``medoid``' - For each treatment, return only the medoid (the sample most similar to the other samples for that treatment)..
+	| '``medoid``' - For each treatment, return only the medoid (the sample most similar to the other samples for that treatment). Note: 'imputation of missing values' cannot be set to 'none'.
 	|
 
 ------------
@@ -788,7 +788,7 @@ dataMatrix
 'Wild card' patterns to match class-names
 -----------------------------------------
 
-W4m Data Subset supports use of R "wild card" patterns to select class-names.
+W4M Data Subset supports use of R "wild card" patterns to select class-names.
 
 - use '``?``' to match a single character
 - use '``*``' to match zero or more characters
@@ -804,7 +804,7 @@ For example
 'Regular expression' patterns to match class-names
 --------------------------------------------------
 
-W4m Data Subset supports use of R "regular expression" patterns to select class-names.
+W4M Data Subset supports use of R "regular expression" patterns to select class-names.
 
 R uses POSIX 1003.2 standard regular expressions, which allow precise pattern-matching and are exhaustively defined at:
 http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html
@@ -880,12 +880,13 @@ A "center" for each treatment may be computed in lieu of all the samples for eac
 - 'none' - Return all samples; do not compute centers.
 - 'centroid' - For each treatment, return only the centroid (the treatment-center computed as the mean intensity for each feature).
 - 'median' - For each treatment, return only the treatment-center computed as the median intensity for each feature.
-- 'medoid' - For each treatment, return only the medoid (the sample most similar to the other samples for that treatment).
+- 'medoid' - For each treatment, return only the medoid (the sample most similar to the other samples for that treatment).  This choice requires that imputation not be set ot 'none'.
 
 The medoid is computed as the sample having the smallest sum of its distances from other samples in the treatment.
 
-- Principal components are uncorrelated, so distances are computed in principal-components space to minimize the distortion of computed distances by correlated features.
 - The distances are used to identify the medoid using code adapted from https://www.biostars.org/p/11987/#11989
+- Because principal components are uncorrelated, distances are computed in principal-components space to minimize the distortion of computed distances by correlated features.
+- Because principal components are used to compute distances, no missing values are permitted; hence, imputation must not be set to 'none'.
 
 -----------------------------------------------------------------------------
 
@@ -1041,9 +1042,9 @@ This example retains only the samples that are medoids for their gender.
 +-------------------+----------------------------------------------------------------------------------------------------------+
     ]]></help>
     <citations>
-        <!-- Giacomoni_2014 W4m 2.5 -->
+        <!-- Giacomoni_2014 W4M 2.5 -->
         <citation type="doi">10.1093/bioinformatics/btu813</citation>
-        <!-- Guitton_2017 W4m 3.0 -->
+        <!-- Guitton_2017 W4M 3.0 -->
         <citation type="doi">10.1016/j.biocel.2017.07.002</citation>
         <!-- Kuhl_2012 CAMERA -->
         <citation type="doi">10.1021/ac202450g</citation>

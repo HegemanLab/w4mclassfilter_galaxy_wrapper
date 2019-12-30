@@ -113,7 +113,7 @@ The W4m Data Subset tool may be applied several times sequentially; for example,
   - name of the column in sample metadata that is used to sort samples
 - Column that specifies order for features (default = 'variableMetadata')
   - name of the column in variable metadata that is used to sort samples
-- Column that specifies whether treatment/class-centers should be computed:
+- Column that specifies whether treatment/class-centers should be computed (default = 'none')
   - *none* - do not compute centers for classes/treatments
   - *centroid* - for each class, compute the mean for each feature
   - *median* - for each class, compute the median for each feature

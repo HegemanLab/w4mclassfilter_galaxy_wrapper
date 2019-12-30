@@ -108,7 +108,7 @@ The W4m Data Subset tool may be applied several times sequentially; for example,
   - *none* - do not impute missing data matrix values
   - *zero* - substitue zero for missing values in the data matrix
   - *center* - for missing values in the data matrix, substitute the median intensity for the feature (for samples where it is not missing).
-  - Negative values are always substituted with missing values before imputation, even when `none` is chosen.
+  - Negative intensities are always substituted with missing values before imputation, even when `none` is chosen.
 - Column that specifies order for samples (default = 'sampleMetadata')
   - name of the column in sample metadata that is used to sort samples
 - Column that specifies order for features (default = 'variableMetadata')
@@ -137,7 +137,7 @@ The W4m Data Subset tool may be applied several times sequentially; for example,
 
 * Enhancement: Added option "compute center for each treatment" [https://github.com/HegemanLab/w4mclassfilter/issues/6](https://github.com/HegemanLab/w4mclassfilter/issues/6).
 * Enhancement: Added option "enable sorting on multiple columns of metadata" [https://github.com/HegemanLab/w4mclassfilter/issues/7](https://github.com/HegemanLab/w4mclassfilter/issues/7).
-* Enhancement: Added option "always treat negative values as missing values" [https://github.com/HegemanLab/w4mclassfilter\_galaxy\_wrapper/issues/7](https://github.com/HegemanLab/w4mclassfilter_galaxy_wrapper/issues/7).
+* Enhancement: Added option "always treat negative intensities as missing values" [https://github.com/HegemanLab/w4mclassfilter\_galaxy\_wrapper/issues/7](https://github.com/HegemanLab/w4mclassfilter_galaxy_wrapper/issues/7).
 
 #### Internal modifications
 

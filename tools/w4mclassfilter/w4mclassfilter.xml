@@ -136,7 +136,7 @@
             <option value="none" selected="true">none: &#160;&#160; Do not compute centers for classes/treatments.</option>
             <option value="centroid">centroid: &#160;&#160; For each class, compute the mean for each feature.</option>
             <option value="median">median: &#160;&#160; For each class, compute the median for each feature.</option>
-            <option value="medoid">medoid: &#160;&#160; For each class, select only the most central member. 'Imputation of missing values' cannot be 'none'.</option>
+            <option value="medoid">medoid: &#160;&#160; For each class, select only the most central member. Note that 'Imputation of missing values' cannot be 'none'.</option>
         </param>
     </inputs>
     <outputs>
@@ -757,17 +757,17 @@ Imputation of missing values (default = '``zero``')
 	| '``center``' - For each feature, negative and missing values are imputed to the median of other values.
 	|
 
-Comma-separated columns that specify order for samples (default = 'sampleMetadata')
+Comma-separated columns that specify order for samples (default = '``sampleMetadata``')
 	| names of the columns in **sampleMetadata** that is used to sort samples; only letters, digits, periods, and underscores are permitted.
 	| (Avoid including any extra space characters.)
 	|
 
-Comma-separated columns that specify order for features (default = 'variableMetadata')
+Comma-separated columns that specify order for features (default = '``variableMetadata``')
 	| names of the columns in **variableMetadata** that is used to sort features; only letters, digits, periods, and underscores are permitted.
 	| (Avoid including any extra space characters.)
 	|
 
-Option to compute class/treatment-centers (default = 'none')
+Option to compute class/treatment-centers (default = '``none``')
 	| '``none``' - Return all samples; do not compute centers for classes/treatments.
 	| '``centroid``' - For each treatment, return only the centroid (the treatment-center computed as the mean intensity for each feature).
 	| '``median``' - For each treatment, return only the treatment-center computed as the median intensity for each feature.

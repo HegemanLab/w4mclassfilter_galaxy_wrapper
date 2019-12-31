@@ -1,6 +1,8 @@
 <tool id="w4mclassfilter" name="W4m Data Subset" version="0.98.18">
     <description>Filter W4M data by values or metadata</description>
-    <!-- Here is the hyphenation standard that I *try* to apply consistently in my documentation: http://www.sandranoonan.com/dont-let-hyphenation-drive-crazy/ -->
+    <!-- Here is the hyphenation standard that I *try* to apply consistently in my documentation: 
+         https://web.archive.org/web/20161014025757/http://www.sandranoonan.com/dont-let-hyphenation-drive-crazy/
+    -->
     <requirements>
         <requirement type="package" version="3.6.2">r-base</requirement>
         <requirement type="package" version="1.1_5">r-batch</requirement>
@@ -34,14 +36,14 @@
     fi
     ]]></command>
     <inputs>
-        <param name="dataMatrix_in" format="tabular" label="Data matrix file" type="data"
-            help="data matrix, with sample names in first row and feature names in first column" />
-        <param name="sampleMetadata_in" format="tabular" label="Sample metadata file" type="data"
-            help="sample metadata, with one row per sample" />
-        <param name="variableMetadata_in" format="tabular" label="Variable metadata file" type="data"
-            help="variable metadata, with one row per feature" />
-        <param name="classnameColumn" label="Column that names the sample class (or treatent)" type="text" value = "class"
-            help="name of the column in sample metadata that has the values to be referenced by the 'Names of sample-classes' and 'Compute centers for classes' input parameters">
+        <param name="dataMatrix_in" format="tabular" label="Data matrix" type="data"
+            help="Choose data matrix, with sample names in first row and feature names in first column" />
+        <param name="sampleMetadata_in" format="tabular" label="Sample metadata" type="data"
+            help="Choose sample metadata, with one row per sample" />
+        <param name="variableMetadata_in" format="tabular" label="Variable metadata" type="data"
+            help="Choose variable metadata, with one row per feature" />
+        <param name="classnameColumn" label="Column containing the sample-class names(or treatment names)" type="text" value = "class"
+            help="Name the column in sample metadata that has the values to be referenced by the 'Sample-class names' and 'Compute centers for classes' input parameters">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -50,8 +52,8 @@
                 </valid>
             </sanitizer>
         </param>
-        <param name="sampleclassNames" label="Names of sample-classes" type="text" value = ""
-            help="comma-separated names (or regular expressions to match names) of sample-classes to include or exclude (Leave empty to match no names.)">
+        <param name="sampleclassNames" label="Sample-class names" type="text" value = ""
+            help="List (comma-separated) names (or patterns to match names) of sample classes to include or exclude (Leave empty to match no names.)">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -78,16 +80,16 @@
             </sanitizer>
         </param>
         <param name="inclusive" label="Exclude/include named classes" type="select">
-            <option value="TRUE">filter-in: &#160;&#160; Include only the named sample-classes.</option>
-            <option value="FALSE" selected="true">filter-out: &#160;&#160; Exclude only the named sample-classes.</option>
+            <option value="TRUE">filter-in: &#160;&#160; Include only the named sample classes.</option>
+            <option value="FALSE" selected="true">filter-out: &#160;&#160; Exclude only the named sample classes.</option>
         </param>
-        <param name="wildcards" label="Use 'wild cards' or 'regular expressions'" type="select"
-            help="See 'Wild-card patterns to match class-names' and 'Regular-expression patterns to match class-names' sections below.">
-            <option value="TRUE" selected="true">wild-cards: &#160;&#160; Use '*' and '?' to match class names.</option>
-            <option value="FALSE">regular-expressions: &#160;&#160; Use regular expressions to match class names.</option>
+        <param name="wildcards" label="Use 'wild card patterns' or 'regular expression patterns' to match sample-class names" type="select"
+            help="See 'Wild-card patterns to match class names' and 'Regular-expression patterns to match sample-class names' sections below.">
+            <option value="TRUE" selected="true">wild-card patterns: &#160;&#160; Use '*' and '?' to match sample-class names.</option>
+            <option value="FALSE">regular-expression patterns: &#160;&#160; Use regular expressions to match sample-class names.</option>
         </param>
         <param name="variableRangeFilter" label="Variable-range filters" type="text" value = ""
-            help="comma-separated filters, each specified as 'variableMetadataColumnName:min:max' (leave empty for no filtering, as described in 'Variable-range filters' section below.)">
+            help="List (comma-separated) filters, each specified as 'variableMetadataColumnName:min:max' (leave empty for no filtering, as described in 'Variable-range filters' section below.)">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -110,8 +112,8 @@
             <option value="center">center: &#160;&#160; Replace missing values with feature-median.</option>
             <option value="none">none: &#160;&#160; Perform no imputation.  Note that 'compute centers' cannot be set to 'medoid'.</option>
         </param>
-        <param name="order_smpl" label="Column that specifies order for samples" type="text" value = "sampleMetadata"
-            help="name of the column in sample metadata that is used to sort samples (ignored when centering is set to either 'centroid' or 'median')">
+        <param name="order_smpl" label="Columns that specify order for samples" type="text" value = "sampleMetadata"
+            help="List (comma-separated) sample-metadata column names for sorting samples (ignored when 'Compute centers for classes' is set to either 'centroid' or 'median')">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -121,8 +123,8 @@
                 </valid>
             </sanitizer>
         </param>
-        <param name="order_vrbl" label="Column that specifies order for features" type="text" value = "variableMetadata"
-            help="name of the column in variable metadata that is used to sort features">
+        <param name="order_vrbl" label="Columns that specify order for features" type="text" value = "variableMetadata"
+            help="List (comma-separated) feature-metadata column names for sorting features">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -705,26 +707,26 @@ Input files
 Parameters
 ----------
 
-Data matrix file
-	| feature x sample **dataMatrix** (tabular separated values) file of the numeric data matrix, with period-character ('.') as decimal, and 'NA' for missing values.
+Data matrix
+	| feature x sample **dataMatrix** (tab-separated values) file of the numeric data matrix, with period-character ('.') as decimal, and 'NA' for missing values.
 	| The file must not contain metadata apart from the required row and column names.
-	| The row and column names must be identical (with regard to both content or order) to the respective rownames of the variable and sample metadata files.
+	| The row and column names must be identical (with regard to both content or order) to the respective rownames of the variable- and sample-metadata files.
 	|
 
-Sample metadata file
-	| sample x metadata **sampleMetadata** (tabular separated values) file of the numeric and/or character sample metadata, with period-character ('.') as decimal, and 'NA' for missing values.
+Sample metadata
+	| sample x metadata **sampleMetadata** (tab-separated values) file of the numeric and/or character sample metadata, with period-character ('.') as decimal, and 'NA' for missing values.
 	|
 
-Variable metadata file
-	| variable x metadata **variableMetadata** (tabular separated values) file of the numeric and/or character variable metadata, with period-character ('.') as decimal, and 'NA' for missing values.
+Variable metadata
+	| variable x metadata **variableMetadata** (tab-separated values) file of the numeric and/or character variable metadata, with period-character ('.') as decimal, and 'NA' for missing values.
 	|
 
-Column that names the sample-class (default = '``class``')
-	| name of the column in **sampleMetadata** that has the values to be tested against the '``Names of sample-classes``' input parameter or to be referenced by the '``Compute centers for classes``' input parameter.
+Column containing the sample-class names (default = '``class``')
+	| name of the column in **sampleMetadata** that has the values to be tested against the '``Sample-class names``' input parameter or to be referenced by the '``Compute centers for classes``' input parameter.
 	| Only letters, digits, periods, and underscores are permitted.
 	|
 
-Names of sample-classes (default = no names)
+Sample-class names (default = no names)
 	| comma-separated names (or regular expressions to match names) of sample-classes to include or exclude
 	| (Avoid including any extra space characters.)
 	|
@@ -734,9 +736,9 @@ Exclude/include named classes (default = '``filter-out``')
 	| '``filter-out``' - exclude only the named sample-classes
 	|
 
-'Wild cards' or 'regular expressions' (default = '``wild-cards``')
-	| '``wild-cards``' - use wild cards to match names of sample-classes (see the *'Wild-card patterns to match class-names'* section below.)
-	| '``regular-expressions``' - use regular expressions to match the named sample-classes (see the *'Regular-expression patterns to match class-names'* section below.)
+Use 'Wild cards' or 'regular expressions' (default = '``wild-cards``')
+	| '``wild-cards``' - use wild cards to match names of sample-classes (see the *'Wild-card patterns to match class names'* section below.)
+	| '``regular-expressions``' - use regular expressions to match the named sample-classes (see the *'Regular-expression patterns to match class names'* section below.)
 	|
 
 Variable-range filters (default = no filters)
@@ -748,6 +750,7 @@ Data-transformation (default = '``none``')
 	| '``none``' - Do not transform data matrix values.
 	| '``log2``' - Take the log base 2 of the values in the data matrix.
 	| '``log10``' - Take the log base 10 of the values in the data matrix.
+	|
 	| Note that negative intensities become missing values regardless of the choice made here.
 	|
 
@@ -756,22 +759,26 @@ Imputation of missing values (default = '``zero``')
 	| '``zero``' - Negative and missing values are imputed to zero.
 	| '``center``' - For each feature, negative and missing values are imputed to the median of other values.
 	|
+	| Note well: For '``none``' option, '``Compute centers for classes``' cannot be set to '``medoid``'.
+	|
 
-Comma-separated columns that specify order for samples (default = '``sampleMetadata``')
+Columns that specify order for samples (default = '``sampleMetadata``')
 	| names of the columns in **sampleMetadata** that is used to sort samples; only letters, digits, periods, and underscores are permitted.
-	| (Avoid including any extra space characters.)
+	| (Separate column names with commas, avoiding inclusion of any extra space characters.)
 	|
 
-Comma-separated columns that specify order for features (default = '``variableMetadata``')
+Columns that specify order for features (default = '``variableMetadata``')
 	| names of the columns in **variableMetadata** that is used to sort features; only letters, digits, periods, and underscores are permitted.
-	| (Avoid including any extra space characters.)
+	| (Separate column names with commas, avoiding inclusion of any extra space characters.)
 	|
 
-Option to compute class/treatment-centers (default = '``none``')
+Compute centers for classes, e.g., treatments (default = '``none``')
 	| '``none``' - Return all samples; do not compute centers for classes/treatments.
 	| '``centroid``' - For each treatment, return only the centroid (the treatment-center computed as the mean intensity for each feature).
 	| '``median``' - For each treatment, return only the treatment-center computed as the median intensity for each feature.
-	| '``medoid``' - For each treatment, return only the medoid (the sample most similar to the other samples for that treatment). Note: For this option, '``Imputation of missing values``' cannot be set to '``none``'.
+	| '``medoid``' - For each treatment, return only the medoid (the sample most similar to the other samples for that treatment).
+	|
+	| Note well: For '``mediod``' option, '``Imputation of missing values``' cannot be set to '``none``'.
 	|
 
 ------------
@@ -779,20 +786,20 @@ Output files
 ------------
 
 sampleMetadata
-	| (tabular separated values) file identical to the **sampleMetadata** file given as an input argument, excepting lacking rows for samples that have been filtered out (by the sample-class filter, or because of zero variance, or because they were missing in the input data matrix)
+	| (tab-separated values) file identical to the **sampleMetadata** file given as an input argument, excepting lacking rows for samples that have been filtered out (by the sample-class filter, or because of zero variance, or because they were missing in the input data matrix)
 	|
 
 variableMetadata
-	| (tabular separated values) file identical to the **variableMetadata** file given as an input argument, excepting lacking rows for variables (xC-MS features) that have been filtered out (by the variable-range filter, or because of zero variance, or because they were missing in the input data matrix)
+	| (tab-separated values) file identical to the **variableMetadata** file given as an input argument, excepting lacking rows for variables (xC-MS features) that have been filtered out (by the variable-range filter, or because of zero variance, or because they were missing in the input data matrix)
 	|
 
 dataMatrix
-	| (tabular separated values) file identical to the **dataMatrix** file given as an input argument, excepting lacking rows and columns for variables and samples that have been filtered out, respectively
+	| (tab-separated values) file identical to the **dataMatrix** file given as an input argument, excepting lacking rows and columns for variables and samples that have been filtered out, respectively
 	|
 
 
 -----------------------------------------
-Wild-card patterns to match class-names
+Wild-card patterns to match class names
 -----------------------------------------
 
 W4M Data Subset supports use of R "wild card" patterns to select class-names.
@@ -808,7 +815,7 @@ For example
 - '``*.sampl``' matches neither '``my.sample``' nor '``my.own.sample``'
 
 --------------------------------------------------
-Regular-expression patterns to match class-names
+Regular-expression patterns to match class names
 --------------------------------------------------
 
 W4M Data Subset supports use of R "regular expression" patterns to select class-names.
@@ -931,9 +938,9 @@ This example retains only samples whose '``gender``' attribute is '``M``'.
 +---------------------------------------------+-------------------------------+
 | Input Parameter                             | Value                         |
 +=============================================+===============================+
-| Column that names the sample-class          | gender                        |
+| Column that names the sample class          | gender                        |
 +---------------------------------------------+-------------------------------+
-| Names of sample-classes                     | M                             |
+| Sample-class names                          | M                             |
 +---------------------------------------------+-------------------------------+
 | Exclude/include named classes               | filter-in                     |
 +---------------------------------------------+-------------------------------+
@@ -976,9 +983,9 @@ This example retains all samples (except those having zero variance for all feat
 +---------------------------------------------+-----------------------------------+
 | Input Parameter                             | Value                             |
 +=============================================+===================================+
-| Column that names the sample-class          | sampleMetadata                    |
+| Column that names the sample class          | sampleMetadata                    |
 +---------------------------------------------+-----------------------------------+
-| Names of sample-classes                     | HU_13[48]                         |
+| Sample-class names                          | HU_13[48]                         |
 +---------------------------------------------+-----------------------------------+
 | Exclude/include named classes               | filter-out                        |
 +---------------------------------------------+-----------------------------------+
@@ -1020,9 +1027,9 @@ This example retains only the samples that are medoids for their gender.
 +---------------------------------------------+-----------------------------------+
 | Input Parameter                             | Value                             |
 +=============================================+===================================+
-| Column that names the sample-class          | gender                            |
+| Column that names the sample class          | gender                            |
 +---------------------------------------------+-----------------------------------+
-| Names of sample-classes                     | (Leave this field empty.)         |
+| Sample-class names                          | (Leave this field empty.)         |
 +---------------------------------------------+-----------------------------------+
 | Exclude/include named classes               | filter-out                        |
 +---------------------------------------------+-----------------------------------+

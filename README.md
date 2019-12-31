@@ -4,11 +4,11 @@
 
 [Repository 'w4mclassfilter' in Galaxy Toolshed](https://toolshed.g2.bx.psu.edu/repository?repository_id=5f24951d82ab40fa)
 
-# W4m Data Subset
+# W4M Data Subset
 
 #### A Galaxy tool to select a subset of Workflow4Metabolomics data
 
-*W4m Data Subset* is [Galaxy tool-wrapper](https://docs.galaxyproject.org/en/latest/dev/schema.htm) to wrap the
+*W4M Data Subset* is [Galaxy tool-wrapper](https://docs.galaxyproject.org/en/latest/dev/schema.htm) to wrap the
 [w4mclassfilter R package](https://github.com/HegemanLab/w4mclassfilter) for use with the
 [Workflow4Metabolomics](http://workflow4metabolomics.org/) flavor of
 [Galaxy](https://galaxyproject.org/).
@@ -34,15 +34,15 @@ See the **NEWS** section at the bottom of this page
 
 GC-MS and LC-MS experiments seek to resolve chemicals as features that have distinct chromatographic retention time ("rt") and (after ionization) mass-to-charge ratio ("m/z" or "mz"). Data for a sample are collected as MS intensities, each of which is associated with a position on a 2D plane with dimensions of rt and m/z. Ideally, features would be sufficiently reproducible among sample-runs to distinguish features that are commmon among samples from those that differ. However, in practice, the chromatographic retention time for a chemical can vary from one sample-injection to the next.
 
-Workflow4Metabolomics (W4m, [Giacomoni et al., 2014, Guitton et al. 2017]) is a "flavor" of Galaxy that uses the XCMS preprocessing tools [Smith et al., 2006] for "retention time correction" to align features among samples; features may be better aligned if pooled samples and blanks are included.
+Workflow4Metabolomics (W4M, [Giacomoni et al., 2014, Guitton et al. 2017]) is a "flavor" of Galaxy that uses the XCMS preprocessing tools [Smith et al., 2006] for "retention time correction" to align features among samples; features may be better aligned if pooled samples and blanks are included.
 
 Multivariate statistical techniques may be used to discover clusters of similar samples [Thévenot et al., 2015]. However, once retention-time alignment of features has been achieved among samples in GC-MS and LC-MS datasets, the presence of pools and blanks may confound identification and separation of clusters. Multivariate statistical algorithms also may be impacted by missing values or dimensions that have zero variance.
 
 ## Description
 
-The W4m Data Subset tool selects subsets of samples, features, or data values for further analysis.
+The W4M Data Subset tool selects subsets of samples, features, or data values for further analysis.
 
-- The tool takes as input the data matrix, sample metadata, and variable metadata datasets produced by produced by W4m's XCMS [Smith et al., 2006] and CAMERA [Kuhl et al., 2012] tools.
+- The tool takes as input the data matrix, sample metadata, and variable metadata datasets produced by produced by W4M's XCMS [Smith et al., 2006] and CAMERA [Kuhl et al., 2012] tools.
 - The tool produces as output the same trio of datasets, modified as follows:
 
 This tool performs several operations to address several data issues that may impede downstream statistical analysis:
@@ -63,7 +63,7 @@ This tool also can perform several operations to reduce the number samples or fe
 - Features may be eliminated by specifying minimum or maximum intensity (or both) allowable in columns of dataMatrix for at least one sample for each feature (“range of row-maximum for each feature”).
 - If desired, a "center" for each treatment can be computed in lieu of the samples for that treatment.
 
-The W4m Data Subset tool may be applied several times sequentially; for example, this may be useful for viewing clusters of progressively smaller subsets of samples.
+The W4M Data Subset tool may be applied several times sequentially; for example, this may be useful for viewing clusters of progressively smaller subsets of samples.
 
 ## Galaxy Workflow Position
 
@@ -209,9 +209,9 @@ The W4m Data Subset tool may be applied several times sequentially; for example,
 
 #### New features
 
-* The tool now appears in Galaxy with a new, more representative name: "W4m Data Subset". (Earlier versions of this tool appeared in Galaxy with the name "Sample Subset".)
+* The tool now appears in Galaxy with a new, more representative name: "W4M Data Subset". (Earlier versions of this tool appeared in Galaxy with the name "Sample Subset".)
 * Option was added to log-transform data matrix values.
-* Output datasets are named in conformance with the W4m convention of appending the name of each preprocessing tool to the input dataset name.
+* Output datasets are named in conformance with the W4M convention of appending the name of each preprocessing tool to the input dataset name.
 * Superflous "Column that names the sample" input parameter was eliminated.
 * Some documentation was updated or clarified.
 

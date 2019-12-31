@@ -93,12 +93,12 @@ The W4M Data Subset tool may be applied several times sequentially; for example,
   - name of the column in sample metadata that has the values to be tested against the 'classes' input parameter
 - Names of sample classes (default = no names)
   - comma-separated names of sample classes to include or exclude
-- Use wild-cards or regular-expressions (default = 'wild-cards')
-  - *wild-cards*  use '`*`' and '`?`' to match class names
-  - *regular-expressions* - use comma-less regular expressions to match class names
 - Include named classes (default = 'filter-out')
   - *filter-in* - include only the named sample classes
   - *filter-out* - exclude only the named sample classes
+- Use wild-cards or regular-expressions (default = 'wild-cards')
+  - *wild-cards*  use '`*`' and '`?`' to match class names
+  - *regular-expressions* - use comma-less regular expressions to match class names
 - Variable range-filters (default = no filters)
   - comma-separated filters, each specified as 'variableMetadataColumnName:min:max'; default is no filters
 - Data transformation (default = 'none')

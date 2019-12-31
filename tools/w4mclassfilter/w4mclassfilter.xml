@@ -40,8 +40,8 @@
             help="sample metadata, with one row per sample" />
         <param name="variableMetadata_in" format="tabular" label="Variable metadata file" type="data"
             help="variable metadata, with one row per feature" />
-        <param name="classnameColumn" label="Column that names the sample-class" type="text" value = "class"
-            help="name of the column in sample metadata that has the values to be tested against the 'Names of sample-classes' input parameter">
+        <param name="classnameColumn" label="Column that names the sample class (or treatent)" type="text" value = "class"
+            help="name of the column in sample metadata that has the values to be referenced by the 'Names of sample-classes' and 'Compute centers for classes' input parameters">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -51,13 +51,13 @@
             </sanitizer>
         </param>
         <param name="sampleclassNames" label="Names of sample-classes" type="text" value = ""
-            help="comma-separated names (or regular expressions to match names) of sample-classes to filter in or out (Leave empty to match no names.)">
+            help="comma-separated names (or regular expressions to match names) of sample-classes to include or exclude (Leave empty to match no names.)">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
-                    <add value="&#123;"   /> <!-- l-cube, left-curly-bracket -->
+                    <add value="&#123;"   /> <!-- l-curb, left-curly-bracket -->
                     <add value="&#124;"   /> <!-- pipe -->
-                    <add value="&#125;"   /> <!-- r-cube, right-curly-bracket -->
+                    <add value="&#125;"   /> <!-- r-curb, right-curly-bracket -->
                     <add value="&#36;"    /> <!-- dollar, dollar-sign -->
                     <add value="&#40;"    /> <!-- left-paren -->
                     <add value="&#41;"    /> <!-- right-paren -->
@@ -77,18 +77,17 @@
                 </valid>
             </sanitizer>
         </param>
-        <param name="wildcards" label="Use 'wild cards' or 'regular expressions'" type="select"
-            help="'wild-cards' - use '*' and '?' to match class names; &#160;&#160; 'regular-expressions' - use regular expressions to match class names">
-            <option value="TRUE" selected="true">wild-cards</option>
-            <option value="FALSE">regular-expressions</option>
+        <param name="inclusive" label="Exclude/include named classes" type="select">
+            <option value="TRUE">filter-in: &#160;&#160; Include only the named sample-classes.</option>
+            <option value="FALSE" selected="true">filter-out: &#160;&#160; Exclude only the named sample-classes.</option>
         </param>
-        <param name="inclusive" label="Exclude/include named classes" type="select"
-            help="'filter-out' - exclude only the named sample-classes; &#160;&#160;  'filter-in' - include only the named sample-classes">
-            <option value="TRUE">filter-in</option>
-            <option value="FALSE" selected="true">filter-out</option>
+        <param name="wildcards" label="Use 'wild cards' or 'regular expressions'" type="select"
+            help="See 'Wild-card patterns to match class-names' and 'Regular-expression patterns to match class-names' sections below.">
+            <option value="TRUE" selected="true">wild-cards: &#160;&#160; Use '*' and '?' to match class names.</option>
+            <option value="FALSE">regular-expressions: &#160;&#160; Use regular expressions to match class names.</option>
         </param>
         <param name="variableRangeFilter" label="Variable-range filters" type="text" value = ""
-            help="comma-separated filters, each specified as 'variableMetadataColumnName:min:max' (leave empty for no filtering, as described in help below.)">
+            help="comma-separated filters, each specified as 'variableMetadataColumnName:min:max' (leave empty for no filtering, as described in 'Variable-range filters' section below.)">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -100,19 +99,19 @@
             </sanitizer>
         </param>
         <param name="transformation" label="Data-transformation" type="select"
-            help="'none' - do not transform data; &#160;&#160;  'log2' - log base 2 of data; &#160;&#160;  'log10' - log base 10 of data; &#160;&#160;  In all cases, negative intensities become missing values.">
-            <option value="none" selected="true">none</option>
-            <option value="log2">log2</option>
-            <option value="log10">log10</option>
+            help="Choose transformation.  In all cases, negative intensities become missing values.  See 'Data transformation and imputation' section below.">
+            <option value="none" selected="true">none: &#160;&#160; Do not transform data.</option>
+            <option value="log2">log2: &#160;&#160; Perform log base 2 transformation of data.</option>
+            <option value="log10">log10: &#160;&#160; Perform log base 10 transformation of data.</option>
         </param>
         <param name="imputation" label="Imputation of missing values" type="select"
-            help="'zero' - replace missing values with zero; &#160;&#160;  'center' - replace missing values with feature-median; &#160;&#160;  'none' - perform no imputation">
-            <option value="zero" selected="true">zero</option>
-            <option value="center">center</option>
-            <option value="none">none</option>
+            help="Choose imputation for missing values.  See 'Data transformation and imputation' section below.">
+            <option value="zero" selected="true">zero: &#160;&#160; Replace missing values with zero.</option>
+            <option value="center">center: &#160;&#160; Replace missing values with feature-median.</option>
+            <option value="none">none: &#160;&#160; Perform no imputation.  Note that 'compute centers' cannot be set to 'medoid'.</option>
         </param>
         <param name="order_smpl" label="Column that specifies order for samples" type="text" value = "sampleMetadata"
-            help="name of the column in sample metadata that is used to sort samples">
+            help="name of the column in sample metadata that is used to sort samples (ignored when centering is set to either 'centroid' or 'median')">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -133,12 +132,11 @@
                 </valid>
             </sanitizer>
         </param>
-        <param name="centering" label="Compute centers for classes (e.g., treatments)" type="select"
-            help="'none' - do not compute centers for classes/treatments; &#160;&#160;  'centroid' - for each class, compute the mean for each feature; &#160;&#160;  'median' - for each class, compute the median for each feature; &#160;&#160;  'medoid' - for each class, select only the most central member ('imputation of missing values' must be set to 'zero' or 'center')">
-            <option value="none" selected="true">none</option>
-            <option value="centroid">centroid</option>
-            <option value="median">median</option>
-            <option value="medoid">medoid</option>
+        <param name="centering" label="Compute centers for classes (e.g., treatments)" type="select">
+            <option value="none" selected="true">none: &#160;&#160; Do not compute centers for classes/treatments.</option>
+            <option value="centroid">centroid: &#160;&#160; For each class, compute the mean for each feature.</option>
+            <option value="median">median: &#160;&#160; For each class, compute the median for each feature.</option>
+            <option value="medoid">medoid: &#160;&#160; For each class, select only the most central member. 'Imputation of missing values' cannot be 'none'.</option>
         </param>
     </inputs>
     <outputs>
@@ -667,17 +665,17 @@ This tool also performs several operations to address several data issues that m
 - Samples that are missing from either sampleMetadata or dataMatrix are eliminated.
 - Features that are missing from either variableMetadata or dataMatrix are eliminated.
 - Features and samples that have zero variance are eliminated.
-- Samples and features have consistent order in `variableMetadata`, `sampleMetadata`, and `dataMatrix`.
+- Samples and features are ordered consistently in `variableMetadata`, `sampleMetadata`, and `dataMatrix`.
   (The column for sorting `variableMetadata` or `sampleMetadata` may be specified.)
 - The names of the first columns of variableMetadata and sampleMetadata are set respectively to "variableMetadata" and "sampleMetadata".
 - If desired, the values in the dataMatrix may be log-transformed.
 - Negative intensities become missing values.
-- If desired, each missing value in dataMatrix is replaced with zero or the median value observed for the corresponding feature.
+- If desired, each missing value in dataMatrix may be replaced with zero or the median value observed for the corresponding feature.
 
 This tool may be applied several times sequentially, which may be useful for:
 
 - analyzing subsets of samples for progressively smaller sets of treatment-levels, or
-- choosing subsets of samples based on criteria in several columns of the sampleMetadata table.
+- choosing subsets of samples or features, respectively based on criteria in columns of the sampleMetadata or variableMetadata tables.
 
 -----------------
 Workflow Position
@@ -708,28 +706,27 @@ Parameters
 ----------
 
 Data matrix file
-	| feature x sample **dataMatrix** (tabular separated values) file of the numeric data matrix, with period-character ('.') as decimal, and 'NA' for missing values; the table must not contain metadata apart from the required row and column names; the row and column names must be identical (with regard to both content or order) to the respective rownames of the sample metadata file and variable metadata file
+	| feature x sample **dataMatrix** (tabular separated values) file of the numeric data matrix, with period-character ('.') as decimal, and 'NA' for missing values.
+	| The file must not contain metadata apart from the required row and column names.
+	| The row and column names must be identical (with regard to both content or order) to the respective rownames of the variable and sample metadata files.
 	|
 
 Sample metadata file
-	| sample x metadata **sampleMetadata** (tabular separated values) file of the numeric and/or character sample metadata, with . as decimal and NA for missing values
+	| sample x metadata **sampleMetadata** (tabular separated values) file of the numeric and/or character sample metadata, with period-character ('.') as decimal, and 'NA' for missing values.
 	|
 
 Variable metadata file
-	| variable x metadata **variableMetadata** (tabular separated values) file of the numeric and/or character variable metadata, with . as decimal and NA for missing values
+	| variable x metadata **variableMetadata** (tabular separated values) file of the numeric and/or character variable metadata, with period-character ('.') as decimal, and 'NA' for missing values.
 	|
 
 Column that names the sample-class (default = '``class``')
-	| name of the column in **sampleMetadata** that has the values to be tested against the '``Names of sample-classes``' input parameter; only letters, digits, periods, and underscores are permitted.
+	| name of the column in **sampleMetadata** that has the values to be tested against the '``Names of sample-classes``' input parameter or to be referenced by the '``Compute centers for classes``' input parameter.
+	| Only letters, digits, periods, and underscores are permitted.
 	|
 
 Names of sample-classes (default = no names)
 	| comma-separated names (or regular expressions to match names) of sample-classes to include or exclude
-	|
-
-'Wild cards' or 'regular expressions' (default = '``wild-cards``')
-	| '``wild-cards``' - use wild cards to match names of sample-classes (see the 'Wild card patterns to match class-names' section below)
-	| '``regular-expressions``' - use regular expressions to match the named sample-classes (see the 'Regular expression patterns to match class-names' section below)
+	| (Avoid including any extra space characters.)
 	|
 
 Exclude/include named classes (default = '``filter-out``')
@@ -737,14 +734,21 @@ Exclude/include named classes (default = '``filter-out``')
 	| '``filter-out``' - exclude only the named sample-classes
 	|
 
+'Wild cards' or 'regular expressions' (default = '``wild-cards``')
+	| '``wild-cards``' - use wild cards to match names of sample-classes (see the *'Wild-card patterns to match class-names'* section below.)
+	| '``regular-expressions``' - use regular expressions to match the named sample-classes (see the *'Regular-expression patterns to match class-names'* section below.)
+	|
+
 Variable-range filters (default = no filters)
-	| comma-separated names of variable-range filters (see the 'Variable-range filters' section below)
+	| comma-separated names of variable-range filters (see the *'Variable-range filters'* section below)
+	| (Avoid including any extra space characters.)
 	|
 
 Data-transformation (default = '``none``')
 	| '``none``' - Do not transform data matrix values.
 	| '``log2``' - Take the log base 2 of the values in the data matrix.
 	| '``log10``' - Take the log base 10 of the values in the data matrix.
+	| Note that negative intensities become missing values regardless of the choice made here.
 	|
 
 Imputation of missing values (default = '``zero``')
@@ -753,19 +757,21 @@ Imputation of missing values (default = '``zero``')
 	| '``center``' - For each feature, negative and missing values are imputed to the median of other values.
 	|
 
-Column that specifies order for samples (default = 'sampleMetadata')
-	| name of the column in **sampleMetadata** that is used to sort samples; only letters, digits, periods, and underscores are permitted.
+Comma-separated columns that specify order for samples (default = 'sampleMetadata')
+	| names of the columns in **sampleMetadata** that is used to sort samples; only letters, digits, periods, and underscores are permitted.
+	| (Avoid including any extra space characters.)
 	|
 
-Column that specifies order for features (default = 'variableMetadata')
-	| name of the column in **variableMetadata** that is used to sort features; only letters, digits, periods, and underscores are permitted.
+Comma-separated columns that specify order for features (default = 'variableMetadata')
+	| names of the columns in **variableMetadata** that is used to sort features; only letters, digits, periods, and underscores are permitted.
+	| (Avoid including any extra space characters.)
 	|
 
 Option to compute class/treatment-centers (default = 'none')
 	| '``none``' - Return all samples; do not compute centers for classes/treatments.
 	| '``centroid``' - For each treatment, return only the centroid (the treatment-center computed as the mean intensity for each feature).
 	| '``median``' - For each treatment, return only the treatment-center computed as the median intensity for each feature.
-	| '``medoid``' - For each treatment, return only the medoid (the sample most similar to the other samples for that treatment). Note: 'imputation of missing values' cannot be set to 'none'.
+	| '``medoid``' - For each treatment, return only the medoid (the sample most similar to the other samples for that treatment). Note: For this option, '``Imputation of missing values``' cannot be set to '``none``'.
 	|
 
 ------------
@@ -786,7 +792,7 @@ dataMatrix
 
 
 -----------------------------------------
-'Wild card' patterns to match class-names
+Wild-card patterns to match class-names
 -----------------------------------------
 
 W4M Data Subset supports use of R "wild card" patterns to select class-names.
@@ -802,7 +808,7 @@ For example
 - '``*.sampl``' matches neither '``my.sample``' nor '``my.own.sample``'
 
 --------------------------------------------------
-'Regular expression' patterns to match class-names
+Regular-expression patterns to match class-names
 --------------------------------------------------
 
 W4M Data Subset supports use of R "regular expression" patterns to select class-names.
@@ -834,33 +840,33 @@ First Example: Consider a field of class-names consisting of '``marq3,marq6,marq
 
 Second Example: Consider these regular expression patterns as possible matches to a sample-class name '``AB0123``':
 
-- '``^[A-Z][A-Z][0-9][0-9]*$``' - MATCHES '``**^AB0123$**``'
-- '``^[A-Z][A-Z]*[0-9][0-9]*$``' - MATCHES '``**^AB0123$**``'
-- '``^[A-Z][0-9]*``' - MATCHES  '``**^A** B0123$``' - first character is a letter, '``*``' can specify zero characters, and end of line did not need to be matched.
-- '``^[A-Z][A-Z][0-9]``' - MATCHES  '``**^AB0** 123$``' - first two characters are letters aind the third is a digit.
-- '``^[A-Z][A-Z]*[0-9][0-9]$``' - NO MATCH - the name does not end with the pattern '``[A-Z][0-9][0-9]$``', i.e., it ends with four digits, not two.
-- '``^[A-Z][0-9]*$``' - NO MATCH - the pattern specifies that second character and all those that follow, if present, must be digits.
+- '``^[A-Z][A-Z][0-9][0-9]*$``' MATCHES '``**^AB0123$**``'
+- '``^[A-Z][A-Z]*[0-9][0-9]*$``' MATCHES '``**^AB0123$**``'
+- '``^[A-Z][0-9]*``' MATCHES '``**^A** B0123$``' - first character is a letter, '``*``' can specify zero characters, and end of line did not need to be matched.
+- '``^[A-Z][A-Z][0-9]``' MATCHES '``**^AB0** 123$``' - first two characters are letters aind the third is a digit.
+- '``^[A-Z][A-Z]*[0-9][0-9]$``' DOES NOT MATCH - the name does not end with the pattern '``[A-Z][0-9][0-9]$``', i.e., it ends with four digits, not two.
+- '``^[A-Z][0-9]*$``' DOES NOT MATCH - the pattern specifies that second character and all those that follow, if present, must be digits.
 
 ----------------------
 Variable-range filters
 ----------------------
 
-An array of range-specification strings may be supplied in the `variableRangeFilter`
+An array of range-specification strings may be supplied in the '``Variable-range filters``'
 argument.  If supplied, only features having numerical values in the specified column
-of `variableMetadata` that fall within the specified ranges will be retained
-in the output.  Each range is a string of three colon-separated values (e.g., "mz:200:800") in the
+of **variableMetadata** that fall within the specified ranges will be retained
+in the output.  Each range is a string of three colon-separated values (e.g., '``mz:200:800``') in the
 following order:
 
-- the **name of a column of `variableMetadata`** which must have numerical data (only letters, digits, periods, and underscores are permitted in the name itself), e.g., 'mz';
-- the **minimum allowed value** in that column for the feature to be retained, e.g., '200';
-- the **maximum allowed value**, e.g., '800'.
+- the **name of a column** of **variableMetadata** which must have numerical data (only letters, digits, periods, and underscores are permitted in the name itself), e.g., '``mz``';
+- the **minimum allowed value** in that column for the feature to be retained, e.g., '``200``';
+- the **maximum allowed value**, e.g., '``800``'.
 
 Note for the range specification strings:
 
-- **If the "maximum" is less than the "minimum", then the range is exclusive**  (e.g., "mz:800:200" means retain only features whose mz is NOT in the range 200-800)
-- **If the name supplied in the first field is 'FEATMAX',**  then the string is defining the minimum (and possibly, though less useful, maximum) intensity for each feature in the dataMatrix.  For example, "FEATMAX:1e6:" would specify  that any feature would be excluded if no sample had an intensity for that feature greater than 1000000.
+- **If the "maximum" is less than the "minimum", then the range is exclusive**  (e.g., '``mz:800:200``' means retain only features whose mz is NOT in the range 200-800)
+- **If the name supplied in the first field is 'FEATMAX',**  then the string is defining the minimum (and possibly though less useful, maximum) intensity for each feature in the dataMatrix.  For example, '``FEATMAX:1e6:``' would specify  that any feature would be excluded if no sample had an intensity for that feature greater than 1000000.
 
-  - Note, however, that when the "maximum" is greater than the "minimum" for the FEATMAX range specification, then the specification is ignored.
+  - Note, however, that when the "maximum" is less than the "minimum" for the FEATMAX range specification, then the specification is ignored.
 
 ----------------------------------
 Data transformation and imputation
@@ -870,7 +876,12 @@ Data may optionally be log2- or log10-transformed.
 
 Negative intensities are always substituted with missing values before imputation, even when no transformation is chosen.
 
-Missing intensity data values may optionally be imputed.  Missing values may be substituted with zeros (as may be appropriate for univariate analysis) or with the median for the feature (as may be appropriate for multivariate analysis).  (Note that the median feature-intensity is computed for the samples *before* variable-range filters are applied.)
+Missing intensity data values may optionally be imputed.  Missing values may be substituted:
+
+- with zeros (as may be appropriate for univariate analysis)
+- with the median for the feature (as may be appropriate for multivariate analysis).
+
+  - Note that the median feature-intensity is computed for the samples *before* variable-range filters are applied.
 
 -----------------------------------------
 Optional Computation of Treatment Centers
@@ -878,16 +889,16 @@ Optional Computation of Treatment Centers
 
 A "center" for each treatment may be computed in lieu of all the samples for each treatment.
 
-- 'none' - Return all samples; do not compute centers.
-- 'centroid' - For each treatment, return only the centroid (the treatment-center computed as the mean intensity for each feature).
-- 'median' - For each treatment, return only the treatment-center computed as the median intensity for each feature.
-- 'medoid' - For each treatment, return only the medoid (the sample most similar to the other samples for that treatment).  This choice requires that imputation not be set ot 'none'.
+- '``none``' - Return all samples; do not compute centers.
+- '``centroid``' - For each treatment, return only the centroid (the treatment-center computed as the mean intensity for each feature).
+- '``median``' - For each treatment, return only the treatment-center computed as the median intensity for each feature.
+- '``medoid``' - For each treatment, return only the medoid (the sample most similar to the other samples for that treatment).  This choice requires that the '``Imputation of missing values``' argument must not be set to '``none``'.
 
 The medoid is computed as the sample having the smallest sum of its distances from other samples in the treatment.
 
-- The distances are used to identify the medoid using code adapted from https://www.biostars.org/p/11987/#11989
+- The distances are used to identify the medoid using code adapted from https://web.archive.org/web/20191231012914/https://www.biostars.org/p/11987/#11989
 - Because principal components are uncorrelated, distances are computed in principal-components space to minimize the distortion of computed distances by correlated features.
-- Because principal components are used to compute distances, no missing values are permitted; hence, imputation must not be set to 'none'.
+- Because principal components are used to compute distances, no missing values are permitted, which is why the '``Imputation of missing values``' argument must not be set to '``none``'.
 
 -----------------------------------------------------------------------------
 
@@ -913,7 +924,7 @@ Input Files
 Running Without Range-Filtering
 -------------------------------
 
-This example retains only samples whose 'gender' attribute is 'M'.
+This example retains only samples whose '``gender``' attribute is '``M``'.
 
 **Input parameters**
 
@@ -924,9 +935,9 @@ This example retains only samples whose 'gender' attribute is 'M'.
 +---------------------------------------------+-------------------------------+
 | Names of sample-classes                     | M                             |
 +---------------------------------------------+-------------------------------+
-| Use 'wild-cards' or 'regular expressions'   | wild-cards                    |
-+---------------------------------------------+-------------------------------+
 | Exclude/include named classes               | filter-in                     |
++---------------------------------------------+-------------------------------+
+| Use 'wild-cards' or 'regular expressions'   | wild-cards                    |
 +---------------------------------------------+-------------------------------+
 | Variable range-filters                      | (Leave this field empty.)     |
 +---------------------------------------------+-------------------------------+
@@ -957,7 +968,7 @@ This example retains only samples whose 'gender' attribute is 'M'.
 Running With Range-Filtering
 ----------------------------
 
-This example retains only features whose mz is greater than 200, whose rt is less than 800, and whose maximum intensity across all samples is 2,000,000.
+This example retains only features whose ``mz`` is greater than 200, whose ``rt`` is less than 800, and whose maximum intensity across all samples is 2,000,000.
 This example retains all samples (except those having zero variance for all feature), although it would be possible to filter on samples as well.
 
 **Input parameters**
@@ -969,9 +980,9 @@ This example retains all samples (except those having zero variance for all feat
 +---------------------------------------------+-----------------------------------+
 | Names of sample-classes                     | HU_13[48]                         |
 +---------------------------------------------+-----------------------------------+
-| Use 'wild-cards' or 'regular expressions'   | regular-expressions               |
-+---------------------------------------------+-----------------------------------+
 | Exclude/include named classes               | filter-out                        |
++---------------------------------------------+-----------------------------------+
+| Use 'wild-cards' or 'regular expressions'   | regular-expressions               |
 +---------------------------------------------+-----------------------------------+
 | Variable range-filters                      | FEATMAX:20.93157:,mz:200:,rt::800 |
 +---------------------------------------------+-----------------------------------+
@@ -1013,9 +1024,9 @@ This example retains only the samples that are medoids for their gender.
 +---------------------------------------------+-----------------------------------+
 | Names of sample-classes                     | (Leave this field empty.)         |
 +---------------------------------------------+-----------------------------------+
-| Use 'wild-cards' or 'regular expressions'   | wild-cards                        |
-+---------------------------------------------+-----------------------------------+
 | Exclude/include named classes               | filter-out                        |
++---------------------------------------------+-----------------------------------+
+| Use 'wild-cards' or 'regular expressions'   | wild-cards                        |
 +---------------------------------------------+-----------------------------------+
 | Variable range-filters                      | (Leave this field empty.)         |
 +---------------------------------------------+-----------------------------------+

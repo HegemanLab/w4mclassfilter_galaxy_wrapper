@@ -112,9 +112,14 @@ inclusive <- as.logical(argVc["inclusive"])
 classnameColumn <- as.character(argVc["classnameColumn"])
 samplenameColumn <- as.character(argVc["samplenameColumn"])
 
-order_smpl <- as.character(argVc["order_smpl"])
 order_vrbl <- as.character(argVc["order_vrbl"])
 centering <- as.character(argVc["centering"])
+order_smpl <-
+  if (centering == 'centroid' || centering == 'median') {
+    "sampleMetadata"
+  } else {
+    as.character(argVc["order_smpl"])
+  }
 
 variable_range_filter <- as.character(argVc["variable_range_filter"])
 variable_range_filter <- strsplit(x = variable_range_filter, split = ",", fixed = TRUE)[[1]]

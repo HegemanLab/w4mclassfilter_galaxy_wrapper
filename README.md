@@ -56,6 +56,8 @@ This tool performs several operations to address several data issues that may im
 - If desired, the values in the dataMatrix may be log-transformed.
 - If desired, each missing value in dataMatrix is replaced with zero or the median value observed for the corresponding feature.
 
+This tool also provides an option to compute a center for each treatment.
+
 This tool also can perform several operations to reduce the number samples or features to be analyzed (although **this should be done only in a statistically sensible manner** consistent with the nature of your experiment):
 
 - Samples may be eliminated by filtering on a designated “sample class” column in sampleMetadata.

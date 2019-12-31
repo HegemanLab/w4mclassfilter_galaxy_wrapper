@@ -37,13 +37,13 @@
     ]]></command>
     <inputs>
         <param name="dataMatrix_in" format="tabular" label="Data matrix" type="data"
-            help="Choose data matrix, with sample names in first row and feature names in first column" />
+            help="Choose data-matrix file, tab-separated values with sample names in first row and feature names in first column." />
         <param name="sampleMetadata_in" format="tabular" label="Sample metadata" type="data"
-            help="Choose sample metadata, with one row per sample" />
+            help="Choose sample-metadata file, tab-separated values with one row per sample, sample name in first column." />
         <param name="variableMetadata_in" format="tabular" label="Variable metadata" type="data"
-            help="Choose variable metadata, with one row per feature" />
-        <param name="classnameColumn" label="Column containing the sample-class names(or treatment names)" type="text" value = "class"
-            help="Name the column in sample metadata that has the values to be referenced by the 'Sample-class names' and 'Compute centers for classes' input parameters">
+            help="Choose variable-metadata file, tab-separated values with one row per feature, feature name in first column." />
+        <param name="classnameColumn" label="Column containing the sample-class names (or treatment names)" type="text" value = "class"
+            help="Name the column in sample metadata that has the values to be referenced by the 'Sample-class names' and 'Compute centers for classes' input parameters.">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -52,8 +52,8 @@
                 </valid>
             </sanitizer>
         </param>
-        <param name="sampleclassNames" label="Sample-class names" type="text" value = ""
-            help="List (comma-separated) names (or patterns to match names) of sample classes to include or exclude (Leave empty to match no names.)">
+        <param name="sampleclassNames" label="Sample-class names (or patterns)" type="text" value = ""
+            help="List (comma-separated) names (or patterns to match names) of sample classes to include or exclude.  (Leave this empty to match no names.)">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -79,7 +79,7 @@
                 </valid>
             </sanitizer>
         </param>
-        <param name="inclusive" label="Exclude/include named classes" type="select">
+        <param name="inclusive" label="Exclude/include named (or matched) sample classes" type="select">
             <option value="TRUE">filter-in: &#160;&#160; Include only the named sample classes.</option>
             <option value="FALSE" selected="true">filter-out: &#160;&#160; Exclude only the named sample classes.</option>
         </param>
@@ -89,7 +89,7 @@
             <option value="FALSE">regular-expression patterns: &#160;&#160; Use regular expressions to match sample-class names.</option>
         </param>
         <param name="variableRangeFilter" label="Variable-range filters" type="text" value = ""
-            help="List (comma-separated) filters, each specified as 'variableMetadataColumnName:min:max' (leave empty for no filtering, as described in 'Variable-range filters' section below.)">
+            help="List (comma-separated) filters, each specified as 'variableMetadataColumnName:min:max'.  (Leave this empty for no filtering, as described in 'Variable-range filters' section below.)">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -100,7 +100,7 @@
                 </valid>
             </sanitizer>
         </param>
-        <param name="transformation" label="Data-transformation" type="select"
+        <param name="transformation" label="Data transformation" type="select"
             help="Choose transformation.  In all cases, negative intensities become missing values.  See 'Data transformation and imputation' section below.">
             <option value="none" selected="true">none: &#160;&#160; Do not transform data.</option>
             <option value="log2">log2: &#160;&#160; Perform log base 2 transformation of data.</option>
@@ -113,7 +113,7 @@
             <option value="none">none: &#160;&#160; Perform no imputation.  Note that 'compute centers' cannot be set to 'medoid'.</option>
         </param>
         <param name="order_smpl" label="Columns that specify order for samples" type="text" value = "sampleMetadata"
-            help="List (comma-separated) sample-metadata column names for sorting samples (ignored when 'Compute centers for classes' is set to either 'centroid' or 'median')">
+            help="List (comma-separated) sample-metadata column names for sorting samples.  (This is ignored when 'Compute centers for classes' is set to either 'centroid' or 'median'.)">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -124,7 +124,7 @@
             </sanitizer>
         </param>
         <param name="order_vrbl" label="Columns that specify order for features" type="text" value = "variableMetadata"
-            help="List (comma-separated) feature-metadata column names for sorting features">
+            help="List (comma-separated) feature-metadata column names for sorting features.">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -674,6 +674,8 @@ This tool also performs several operations to address several data issues that m
 - Negative intensities become missing values.
 - If desired, each missing value in dataMatrix may be replaced with zero or the median value observed for the corresponding feature.
 
+This tool also provides an option to compute a center for each treatment.
+
 This tool may be applied several times sequentially, which may be useful for:
 
 - analyzing subsets of samples for progressively smaller sets of treatment-levels, or
@@ -731,7 +733,7 @@ Sample-class names (default = no names)
 	| (Avoid including any extra space characters.)
 	|
 
-Exclude/include named classes (default = '``filter-out``')
+Exclude/include named (or matched) classes (default = '``filter-out``')
 	| '``filter-in``' - include only the named sample-classes
 	| '``filter-out``' - exclude only the named sample-classes
 	|
@@ -746,7 +748,7 @@ Variable-range filters (default = no filters)
 	| (Avoid including any extra space characters.)
 	|
 
-Data-transformation (default = '``none``')
+Data transformation (default = '``none``')
 	| '``none``' - Do not transform data matrix values.
 	| '``log2``' - Take the log base 2 of the values in the data matrix.
 	| '``log10``' - Take the log base 10 of the values in the data matrix.

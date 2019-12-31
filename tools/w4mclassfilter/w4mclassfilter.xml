@@ -673,8 +673,7 @@ This tool also performs several operations to address several data issues that m
 - If desired, the values in the dataMatrix may be log-transformed.
 - Negative intensities become missing values.
 - If desired, each missing value in dataMatrix may be replaced with zero or the median value observed for the corresponding feature.
-
-This tool also provides an option to compute a center for each treatment.
+- If desired, a "center" for each treatment can be computed in lieu of the samples for that treatment.
 
 This tool may be applied several times sequentially, which may be useful for:
 

@@ -98,21 +98,21 @@ This tool may be applied several times sequentially, which may be useful for:
 
 ## Input files
 
-| **File**           | **Contents**                             | **Format** |
-|:------------------:|:----------------------------------------:|:----------:|
-| Data matrix        | per-feature, per-sample m/z intensities  |  tabular   |
-| Sample metadata    | metadata for samples                     |  tabular   |
-| Variable metadata  | metadata for features                    |  tabular   |
+| **File**           | **Contents**                         | **Format** |
+|:------------------:|:------------------------------------:|:----------:|
+| Data matrix        | per-feature, per-sample intensities  |  tabular   |
+| Sample metadata    | metadata for samples                 |  tabular   |
+| Variable metadata  | metadata for features                |  tabular   |
 
 
 ## Parameters
 
 - Data matrix file
-  - variable x sample **dataMatrix** (tabular separated values) file of the numeric data matrix, with . as decimal, and NA for missing values; the table must not contain metadata apart from row and column names; the row and column names must be identical to the rownames of the sample and variable metadata, respectively (see below)
+  - variable x sample **dataMatrix** (tabular separated values) file of the numeric data matrix, with period character ('.') as decimal, and 'NA' for missing values; the table must not contain metadata apart from row and column names; the row and column names must be identical to the rownames of the sample and variable metadata, respectively (see below)
 - Sample metadata file
-  - sample x metadata **sampleMetadata** (tabular separated values) file of the numeric and/or character sample metadata, with . as decimal and NA for missing values
+  - sample x metadata **sampleMetadata** (tabular separated values) file of the numeric and/or character sample metadata, with period character ('.') as decimal, and 'NA' for missing values
 - Variable metadata file
-  - variable x metadata **variableMetadata** (tabular separated values) file of the numeric and/or character variable metadata, with . as decimal and NA for missing values
+  - variable x metadata **variableMetadata** (tabular separated values) file of the numeric and/or character variable metadata, with period character ('.') as decimal, and 'NA' for missing values
 - Column that names the sample (default = 'sampleMetadata')
   - name of the column in sample metadata that has the name of the sample
 - Column that names the sample class (default = 'class')

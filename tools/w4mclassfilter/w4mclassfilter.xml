@@ -37,13 +37,13 @@
     ]]></command>
     <inputs>
         <param name="dataMatrix_in" format="tabular" label="Data matrix" type="data"
-            help="Choose data-matrix file, tab-separated values with sample names in first row and feature names in first column." />
+            help="Choose data-matrix file (tab-separated values with sample names in first row and feature names in first column)." />
         <param name="sampleMetadata_in" format="tabular" label="Sample metadata" type="data"
-            help="Choose sample-metadata file, tab-separated values with one row per sample, sample name in first column." />
+            help="Choose sample-metadata file (tab-separated values with one row per sample, sample name in first column)." />
         <param name="variableMetadata_in" format="tabular" label="Variable metadata" type="data"
-            help="Choose variable-metadata file, tab-separated values with one row per feature, feature name in first column." />
+            help="Choose variable-metadata file (tab-separated values with one row per feature, feature name in first column)." />
         <param name="classnameColumn" label="Column containing the sample-class names (or treatment names)" type="text" value = "class"
-            help="Name the column in sample metadata that has the values to be referenced by the 'Sample-class names' and 'Compute centers for classes' input parameters.">
+            help="Name the column in 'Sample metadata' that has the values to be referenced by 'Sample-class names' and 'Compute centers for classes'. [default: 'class']">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -53,7 +53,7 @@
             </sanitizer>
         </param>
         <param name="sampleclassNames" label="Sample-class names (or patterns)" type="text" value = ""
-            help="List (comma-separated) names (or patterns to match names) of sample classes to include or exclude.  (Leave this empty to match no names.)">
+            help="List (comma-separated) of names (or patterns to match names) of sample classes to include or exclude.  (Leave this empty to match no names.) [default: empty]">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -79,17 +79,17 @@
                 </valid>
             </sanitizer>
         </param>
-        <param name="inclusive" label="Exclude/include named (or matched) sample classes" type="select">
+        <param name="inclusive" label="Exclude/include named (or matched) sample classes" type="select" help="Indicate meaning of preceding list: either to identify classes to exclude from output or to identify classes to include in output. [default: 'filter-out']">
             <option value="TRUE">filter-in: &#160;&#160; Include only the named sample classes.</option>
             <option value="FALSE" selected="true">filter-out: &#160;&#160; Exclude only the named sample classes.</option>
         </param>
         <param name="wildcards" label="Use 'wild card patterns' or 'regular expression patterns' to match sample-class names" type="select"
-            help="See 'Wild-card patterns to match class names' and 'Regular-expression patterns to match sample-class names' sections below.">
+            help="See 'Wild-card patterns to match class names' and 'Regular-expression patterns to match sample-class names' sections below. [default: 'wild-card patterns']">
             <option value="TRUE" selected="true">wild-card patterns: &#160;&#160; Use '*' and '?' to match sample-class names.</option>
             <option value="FALSE">regular-expression patterns: &#160;&#160; Use regular expressions to match sample-class names.</option>
         </param>
         <param name="variableRangeFilter" label="Variable-range filters" type="text" value = ""
-            help="List (comma-separated) filters, each specified as 'variableMetadataColumnName:min:max'.  (Leave this empty for no filtering, as described in 'Variable-range filters' section below.)">
+            help="List of filters (comma-separated), each specifying the range of permitted values in a column of 'Variable metdata' (specified as 'column:min:max'), as described in 'Variable-range filters' section below.  (Leave this empty for no filtering.) [default: empty]">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -101,19 +101,19 @@
             </sanitizer>
         </param>
         <param name="transformation" label="Data transformation" type="select"
-            help="Choose transformation.  In all cases, negative intensities become missing values.  See 'Data transformation and imputation' section below.">
+            help="Choose transformation.  In all cases, negative intensities become missing values.  See 'Data transformation and imputation' section below. [default: 'none']">
             <option value="none" selected="true">none: &#160;&#160; Do not transform data.</option>
             <option value="log2">log2: &#160;&#160; Perform log base 2 transformation of data.</option>
             <option value="log10">log10: &#160;&#160; Perform log base 10 transformation of data.</option>
         </param>
         <param name="imputation" label="Imputation of missing values" type="select"
-            help="Choose imputation for missing values.  See 'Data transformation and imputation' section below.">
+            help="Choose imputation for missing values.  See 'Data transformation and imputation' section below. [default: 'zero']">
             <option value="zero" selected="true">zero: &#160;&#160; Replace missing values with zero.</option>
             <option value="center">center: &#160;&#160; Replace missing values with feature-median.</option>
             <option value="none">none: &#160;&#160; Perform no imputation.  Note that 'compute centers' cannot be set to 'medoid'.</option>
         </param>
         <param name="order_smpl" label="Columns that specify order for samples" type="text" value = "sampleMetadata"
-            help="List (comma-separated) sample-metadata column names for sorting samples.  (This is ignored when 'Compute centers for classes' is set to either 'centroid' or 'median'.)">
+            help="List of sample-metadata column names (comma-separated) for sorting samples.  (This is ignored when 'Compute centers for classes' is set to either 'centroid' or 'median'.) [default: 'sampleMetadata']">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -124,7 +124,7 @@
             </sanitizer>
         </param>
         <param name="order_vrbl" label="Columns that specify order for features" type="text" value = "variableMetadata"
-            help="List (comma-separated) feature-metadata column names for sorting features.">
+            help="List of feature-metadata (comma-separated) column names for sorting features. [default: 'variableMetadata']">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -134,7 +134,7 @@
                 </valid>
             </sanitizer>
         </param>
-        <param name="centering" label="Compute centers for classes (e.g., treatments)" type="select">
+        <param name="centering" label="Compute centers for classes (e.g., treatments)" type="select" help="[default: 'none']">
             <option value="none" selected="true">none: &#160;&#160; Do not compute centers for classes/treatments.</option>
             <option value="centroid">centroid: &#160;&#160; For each class, compute the mean for each feature.</option>
             <option value="median">median: &#160;&#160; For each class, compute the median for each feature.</option>
@@ -632,43 +632,45 @@ See https://github.com/HegemanLab/w4mclassfilter_galaxy_wrapper#news
 Motivation
 ----------
 
-GC-MS and LC-MS experiments seek to resolve as features chemicals that have distinct chromatographic retention-time ("rt") and (after ionization) mass-to-charge ratio ("m/z" or "mz").
-(If the MS protocol includes fragmentation, several features may result for each chemical.)
+GC-MS and LC-MS experiments seek to resolve (as "features") chemicals that have distinct chromatographic retention-time ("rt") and (after ionization) mass-to-charge ratio ("m/z" or "mz").
+(If a chemical is fragmented or may have a variety of adducts, several features may result.)
 Data for a sample are collected as MS intensities, each of which is associated with a position on a 2D plane with dimensions of rt and m/z.
 Ideally, features would be sufficiently reproducible among sample-runs to distinguish features that are commmon among samples from those that differ.
 
 The chromatographic retention-time for a chemical can vary from one chromatography run to the next.
-Workflow4Metabolomics (W4M, [Giacomoni *et al.*, 2014, Guitton *et al.* 2017]) is a "flavor" of Galaxy that uses the XCMS preprocessing tools for "retention-time correction" to align features among samples.
+The Workflow4Metabolomics suite of Galaxy tools (W4M, [Giacomoni *et al.*, 2014, Guitton *et al.* 2017])
+uses the XCMS preprocessing tools [Smith *et al.*, 2006]
+for "retention-time correction" to align features among samples.
 Features may be better aligned if pooled samples and blanks are included.
 
-Multivariate statistical techniques may be used to discover clusters of similar samples (Th]]>&#233;<![CDATA[venot *et al.*, 2015).
+Multivariate statistical tools may be used to discover clusters of similar samples [Th]]>&#233;<![CDATA[venot *et al.*, 2015].
 However, once retention-time alignment of features has been achieved among samples in GC-MS and LC-MS datasets:
 
-- The presence of pools and blanks may confound identification and separation of clusters.
+- The presence of pools and blanks may confound identification and separation of sample clusters.
 - Multivariate statistical algorithms may be impacted by missing values or dimensions that have zero variance.
 
 -----------
 Description
 -----------
 
-The **W4M Data Subset** tool **selects subsets of samples, features, or data values** for further analysis.
+The **W4M Data Subset** tool **selects subsets of samples, features, or data values** and **conditions the data** for further analysis.
 
-- The tool takes as input the data matrix, sample metadata, and variable metadata datasets produced by W4M's XCMS [Smith *et al.*, 2006] and CAMERA [Kuhl *et al.*, 2012] tools.
-- The tool produces the same trio of output datasets, modified as follows.
+- The tool takes as input the data matrix, sample metadata, and variable metadata datasets produced by W4M's XCMS and CAMERA [Kuhl *et al.*, 2012] tools.
+- The tool produces the same trio of output datasets, modified as described below.
 
-This tool can perform several operations to reduce the number samples or features to be analyzed (although **this should be done only in a statistically sound manner** consistent with the nature of the experiment):
+This tool can perform several operations to reduce the number samples or features to be analyzed (although *this should be done only in a statistically sound manner* consistent with the nature of the experiment):
 
-- Samples may be eliminated by filtering on a designated “sample class” column in sampleMetadata.
-- Features may be eliminated by specifying minimum or maximum value (or both) allowable in columns of variableMetadata.
-- Features may be eliminated by “range of row-maximum for each feature”, i.e., by specifying minimum or maximum intensity (or both) allowable in each row of the dataMatrix (i.e., for the feature across all samples).
+- Samples may be selected by designating a "sample class" column in sampleMetadata and specifying criteria to include or exclude samples based on the contents of this column.
+- Features may be selected by specifying minimum or maximum value (or both) allowable in columns of variableMetadata.
+- To exclude minimal features from consideration, features may be selected by "range of maximum intensity for each feature", i.e., by specifying the minimum permitted maximum intensity in each row of the dataMatrix (i.e., for the feature across all samples).
 
-This tool also performs several operations to address several data issues that may impede downstream statistical analysis:
+This tool also conditions data for downstream statistical analysis:
 
 - Samples that are missing from either sampleMetadata or dataMatrix are eliminated.
 - Features that are missing from either variableMetadata or dataMatrix are eliminated.
 - Features and samples that have zero variance are eliminated.
 - Samples and features are ordered consistently in `variableMetadata`, `sampleMetadata`, and `dataMatrix`.
-  (The column for sorting `variableMetadata` or `sampleMetadata` may be specified.)
+  (The columns for sorting `variableMetadata` or `sampleMetadata` may be specified.)
 - The names of the first columns of variableMetadata and sampleMetadata are set respectively to "variableMetadata" and "sampleMetadata".
 - If desired, the values in the dataMatrix may be log-transformed.
 - Negative intensities become missing values.

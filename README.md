@@ -54,10 +54,8 @@ similar samples [Th&#233;venot *et al.*, 2015].
 However, once retention-time alignment of features has been achieved
 among samples in GC-MS and LC-MS datasets:
 
--   The presence of pools and blanks may confound identification and
-    separation of sample clusters.
--   Multivariate statistical algorithms may be impacted by missing
-    values or dimensions that have zero variance.
+- The presence of pools and blanks may confound identification and separation of sample clusters.
+- Multivariate statistical algorithms may be impacted by missing values or dimensions that have zero variance.
 
 
 ## Description
@@ -90,71 +88,6 @@ This tool may be applied several times sequentially, which may be useful for:
 
 - analyzing subsets of samples for progressively smaller sets of treatment-levels, or
 - choosing subsets of samples or features, respectively based on criteria in columns of the sampleMetadata or variableMetadata tables.
-
-## Galaxy Workflow Position
-
-- Possible upstream tool categories: Preprocessing, Quality Control, Statistical Analysis, Filter and Sort
-- Downstream tool categories: Normalisation, Statistical Analysis, Quality Control, Filter and Sort
-
-## Input files
-
-| **File**           | **Contents**                         | **Format** |
-|:------------------:|:------------------------------------:|:----------:|
-| Data matrix        | per-feature, per-sample intensities  |  tabular   |
-| Sample metadata    | metadata for samples                 |  tabular   |
-| Variable metadata  | metadata for features                |  tabular   |
-
-
-## Parameters
-
-- Data matrix file
-  - variable x sample **dataMatrix** (tabular separated values) file of the numeric data matrix, with period character ('.') as decimal, and 'NA' for missing values; the table must not contain metadata apart from row and column names; the row and column names must be identical to the rownames of the sample and variable metadata, respectively (see below)
-- Sample metadata file
-  - sample x metadata **sampleMetadata** (tabular separated values) file of the numeric and/or character sample metadata, with period character ('.') as decimal, and 'NA' for missing values
-- Variable metadata file
-  - variable x metadata **variableMetadata** (tabular separated values) file of the numeric and/or character variable metadata, with period character ('.') as decimal, and 'NA' for missing values
-- Column that names the sample (default = 'sampleMetadata')
-  - name of the column in sample metadata that has the name of the sample
-- Column that names the sample class (default = 'class')
-  - name of the column in sample metadata that has the values to be tested against the 'classes' input parameter
-- Names of sample classes (default = no names)
-  - comma-separated names of sample classes to include or exclude
-- Include named classes (default = 'filter-out')
-  - *filter-in* - include only the named sample classes
-  - *filter-out* - exclude only the named sample classes
-- Use wild-cards or regular-expressions (default = 'wild-cards')
-  - *wild-cards*  use '`*`' and '`?`' to match class names
-  - *regular-expressions* - use comma-less regular expressions to match class names
-- Variable range-filters (default = no filters)
-  - comma-separated filters, each specified as 'variableMetadataColumnName:min:max'; default is no filters
-- Data transformation (default = 'none')
-  - *none* - do not transform data matrix values
-  - *log2* - take the log base 2 of the values in the data matrix
-  - *log10* - take the log base 10 of the values in the data matrix
-- Data imputation (default = 'zero')
-  - *none* - do not impute missing data matrix values
-  - *zero* - substitue zero for missing values in the data matrix
-  - *center* - for missing values in the data matrix, substitute the median intensity for the feature (for samples where it is not missing).
-  - Negative intensities are always substituted with missing values before imputation, even when `none` is chosen.
-- Column that specifies order for samples (default = 'sampleMetadata')
-  - name of the column in sample metadata that is used to sort samples
-- Column that specifies order for features (default = 'variableMetadata')
-  - name of the column in variable metadata that is used to sort samples
-- Column that specifies whether treatment/class-centers should be computed (default = 'none')
-  - *none* - do not compute centers for classes/treatments
-  - *centroid* - for each class, compute the mean for each feature
-  - *median* - for each class, compute the median for each feature
-  - *medoid* - for each class, select only the most central member
-
-## Output files
-
-* sampleMetadata
-	* (tabular separated values) file identical to the **sampleMetadata** file given as an input argument, excepting lacking rows for samples (xC-MS features) that have been filtered out (by the sample-class filter or because of zero variance)
-* variableMetadata
-	* (tabular separated values) file identical to the **variableMetadata** file given as an input argument, excepting lacking rows for variables (xC-MS features) that have been filtered out (because of zero variance)
-* dataMatrix
-	* (tabular separated values) file identical to the **dataMatrix** file given as an input argument, excepting lacking rows for variables (xC-MS features) that have been filtered out (because of zero variance) and columns that have been filtered out (by the sample-class filter or because of zero variance)
-
 
 ## NEWS
 

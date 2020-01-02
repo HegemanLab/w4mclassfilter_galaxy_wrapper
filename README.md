@@ -60,31 +60,31 @@ among samples in GC-MS and LC-MS datasets:
 
 The W4M Data Subset tool selects subsets of samples, features, or data values and conditions the data for further analysis.
 
-- The tool takes as input the data matrix, sample metadata, and variable metadata datasets produced by W4M\'s XCMS and CAMERA [Kuhl *et al.*, 2012] tools.
+- The tool takes as input the *dataMatrix*, *sampleMetadata*, and *variableMetadata* datasets produced by W4M\'s XCMS and CAMERA [Kuhl *et al.*, 2012] tools.
 - The tool produces the same trio of output datasets, modified as described below.
 
 This tool can perform several operations to reduce the number samples or features to be analyzed (although *this should be done only in a statistically sound manner* consistent with the nature of the experiment):
 
-- *Sample filtering:* Samples may be selected by designating a "sample class" column in sampleMetadata and specifying criteria to include or exclude samples based on the contents of this column.
-- *Feature filtering:* Features may be selected by specifying minimum or maximum value (or both) allowable in columns of variableMetadata.
+- *Sample filtering:* Samples may be selected by designating a "sample class" column in *sampleMetadata* and specifying criteria to include or exclude samples based on the contents of this column.
+- *Feature filtering:* Features may be selected by specifying minimum or maximum value (or both) allowable in columns of *variableMetadata*.
 - *Intensity filtering:* To exclude minimal features from consideration, a lower bound may be specified for the maximum intensity for a feature across all samples.
 
-This tool also conditions data for downstream statistical analysis:
+This tool also conditions data for statistical analysis:
 
-- Samples that are missing from either sampleMetadata or dataMatrix are eliminated.
-- Features that are missing from either variableMetadata or dataMatrix are eliminated.
+- Samples that are missing from either *sampleMetadata* or *dataMatrix* are eliminated.
+- Features that are missing from either *variableMetadata* or *dataMatrix* are eliminated.
 - Features and samples that have zero variance are eliminated.
-- Samples and features are ordered consistently in variableMetadata, sampleMetadata, and dataMatrix. (The columns for sorting variableMetadata or sampleMetadata may be specified.)
-- The names of the first columns of variableMetadata and sampleMetadata are set respectively to "variableMetadata" and "sampleMetadata".
-- If desired, the values in the dataMatrix may be log-transformed.
-- Negative intensities become missing values.
-- If desired, each missing value in dataMatrix may be replaced with zero or the median value observed for the corresponding feature.
+- Samples and features are ordered consistently in *variableMetadata*, *sampleMetadata*, and *dataMatrix*. (The columns for sorting *variableMetadata* or *sampleMetadata* may be specified.)
+- The names of the first columns of *variableMetadata* and *sampleMetadata* are set respectively to "variableMetadata" and "sampleMetadata".
+- If desired, the values in the *dataMatrix* may be log-transformed.
+- Negative intensities become missing values (before missing-value replacement is performed).
+- If desired, each missing value in *dataMatrix* may be replaced with zero or the median value observed for the corresponding feature.
 - If desired, a "center" for each treatment can be computed in lieu of the samples for that treatment.
 
 This tool may be applied several times sequentially, which may be useful for:
 
 - analyzing subsets of samples for progressively smaller sets of treatment-levels, or
-- choosing subsets of samples or features, respectively based on criteria in columns of the sampleMetadata or variableMetadata tables.
+- choosing subsets of samples or features, respectively based on criteria in columns of *sampleMetadata* or *variableMetadata*.
 
 ## NEWS
 
@@ -179,8 +179,8 @@ This tool may be applied several times sequentially, which may be useful for:
 
 #### New features
 
-* First column of output variableMetadata (that has feature names) now is always named `variableMetadata`
-* First column of output sampleMetadata now (that has sample names) is always named `sampleMetadata`
+* First column of output variableMetadata (that has feature names) now is always named "variableMetadata"
+* First column of output sampleMetadata now (that has sample names) is always named "sampleMetadata"
 
 #### Internal modifications
 

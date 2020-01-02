@@ -32,7 +32,7 @@ See the **NEWS** section at the bottom of this page
 
 ## Motivation
 
-GC-MS and LC-MS experiments seek to resolve (as "features") chemicals that
+GC-MS and LC-MS metabolomics experiments seek to resolve (as "features") chemicals that
 have distinct chromatographic retention-time ("rt") and (after
 ionization) mass-to-charge ratio ("m/z" or "mz"). (If a chemical is
 fragmented or may have a variety of adducts, several features may result.)
@@ -69,7 +69,6 @@ This tool can perform several operations to reduce the number samples or feature
 
 - Samples may be selected by designating a "sample class" column in sampleMetadata and specifying criteria to include or exclude samples based on the contents of this column.
 - Features may be selected by specifying minimum or maximum value (or both) allowable in columns of variableMetadata.
-- Features may be selected by "range of row-maximum for each feature", i.e., by specifying minimum or maximum intensity (or both) allowable in each row of the dataMatrix (i.e., for the feature across all samples).
 - To exclude minimal features from consideration, features may be selected by "range of maximum intensity for each feature", i.e., by specifying the minimum permitted maximum intensity in each row of the dataMatrix (i.e., for the feature across all samples).
 
 This tool also conditions data for downstream statistical analysis:

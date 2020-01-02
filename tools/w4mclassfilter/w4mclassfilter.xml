@@ -632,7 +632,7 @@ See https://github.com/HegemanLab/w4mclassfilter_galaxy_wrapper#news
 Motivation
 ----------
 
-GC-MS and LC-MS experiments seek to resolve (as "features") chemicals that have distinct chromatographic retention-time ("rt") and (after ionization) mass-to-charge ratio ("m/z" or "mz").
+GC-MS and LC-MS metabolomics experiments seek to resolve (as "features") chemicals that have distinct chromatographic retention-time ("rt") and (after ionization) mass-to-charge ratio ("m/z" or "mz").
 (If a chemical is fragmented or may have a variety of adducts, several features may result.)
 Data for a sample are collected as MS intensities, each of which is associated with a position on a 2D plane with dimensions of rt and m/z.
 Ideally, features would be sufficiently reproducible among sample-runs to distinguish features that are commmon among samples from those that differ.

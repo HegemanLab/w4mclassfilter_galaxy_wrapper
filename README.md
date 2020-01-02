@@ -32,15 +32,15 @@ See the **NEWS** section at the bottom of this page
 
 ## Motivation
 
-GC-MS and LC-MS metabolomics experiments seek to resolve "features", i.e., species that have distinct chromatographic retention time ("rt") and (after ionization) mass-to-charge ratio ("m/z" or "mz").
+LC-MS metabolomics experiments seek to resolve "features", i.e., species that have distinct chromatographic retention time ("rt") and (after ionization) mass-to-charge ratio ("*m/z*" or "mz").
 (If a chemical is fragmented or may have a variety of adducts, several features will result.)
 Data for a sample are collected as mass-spectral intensities, each of
 which is associated with a position on a 2D plane with dimensions of rt
-and m/z. Ideally, features would be sufficiently reproducible among
+and *m/z*. Ideally, features would be sufficiently reproducible among
 sample-runs to distinguish features that are similar among samples from
 those that differ in location or intensity.
 
-The chromatographic retention time for a species can vary from one chromatography
+For liquid chromatography, the retention time for a species can vary considerably from one chromatography
 run to the next.  The Workflow4Metabolomics suite of Galaxy tools
 (W4M, [Giacomoni *et al.*, 2014, Guitton *et al.* 2017])
 uses the XCMS preprocessing tools [Smith *et al.*, 2006] for "retention-time correction" to
@@ -50,7 +50,7 @@ samples and blanks are included.
 Multivariate statistical tools may be used to discover clusters of
 similar samples [Th&#233;venot *et al.*, 2015].
 However, once retention-time alignment of features has been achieved
-among samples in GC-MS and LC-MS datasets:
+among samples in LC-MS datasets:
 
 - The presence of pools and blanks may confound identification and separation of sample clusters.
 - Multivariate statistical algorithms may be impacted by missing values or dimensions that have zero variance.
@@ -83,7 +83,7 @@ This tool also conditions data for statistical analysis:
 
 This tool may be applied several times sequentially, which may be useful for:
 
-- analyzing subsets of samples for progressively smaller sets of treatment-levels, or
+- analyzing subsets of samples for progressively smaller sets of treatment levels, or
 - choosing subsets of samples or features, respectively based on criteria in columns of *sampleMetadata* or *variableMetadata*.
 
 ## NEWS

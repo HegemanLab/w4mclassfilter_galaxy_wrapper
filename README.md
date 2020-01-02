@@ -22,9 +22,9 @@ Arthur Eschenlauer (University of Minnesota, esch0041@umn.edu)
 
 The *w4mclassfilter* package is available from the Hegeman lab github repository [https://github.com/HegemanLab/w4mclassfilter/releases](https://github.com/HegemanLab/w4mclassfilter/releases).
 
-#### Tool in Galaxy toolshed
+#### Tool in Galaxy Toolshed
 
-The "w4mclassfilter" Galaxy tool, built from this repository, is in the main Galaxy toolshed at [https://toolshed.g2.bx.psu.edu/repository?repository_id=5f24951d82ab40fa](https://toolshed.g2.bx.psu.edu/repository?repository_id=5f24951d82ab40fa)
+The "w4mclassfilter" Galaxy tool, built from this repository, is in the main Galaxy Toolshed at [https://toolshed.g2.bx.psu.edu/repository?repository_id=5f24951d82ab40fa](https://toolshed.g2.bx.psu.edu/repository?repository_id=5f24951d82ab40fa)
 
 #### Tool updates
 
@@ -32,20 +32,18 @@ See the **NEWS** section at the bottom of this page
 
 ## Motivation
 
-GC-MS and LC-MS metabolomics experiments seek to resolve (as "features") chemicals that
-have distinct chromatographic retention-time ("rt") and (after
-ionization) mass-to-charge ratio ("m/z" or "mz"). (If a chemical is
-fragmented or may have a variety of adducts, several features may result.)
+GC-MS and LC-MS metabolomics experiments seek to resolve "features", i.e., species that have distinct chromatographic retention time ("rt") and (after ionization) mass-to-charge ratio ("m/z" or "mz").
+(If a chemical is fragmented or may have a variety of adducts, several features will result.)
 Data for a sample are collected as mass-spectral intensities, each of
 which is associated with a position on a 2D plane with dimensions of rt
 and m/z. Ideally, features would be sufficiently reproducible among
-sample-runs to distinguish features that are commmon among samples from
-those that differ.
+sample-runs to distinguish features that are similar among samples from
+those that differ in location or intensity.
 
-The Workflow4Metabolomics suite of Galaxy tools
+The chromatographic retention time for a species can vary from one chromatography
+run to the next.  The Workflow4Metabolomics suite of Galaxy tools
 (W4M, [Giacomoni *et al.*, 2014, Guitton *et al.* 2017])
-uses the XCMS preprocessing tools for 
-"retention-time correction" to
+uses the XCMS preprocessing tools [Smith *et al.*, 2006] for "retention-time correction" to
 align features among samples. Features may be better aligned if pooled
 samples and blanks are included.
 
@@ -62,14 +60,14 @@ among samples in GC-MS and LC-MS datasets:
 
 The W4M Data Subset tool selects subsets of samples, features, or data values and conditions the data for further analysis.
 
-- The tool takes as input the data matrix, sample metadata, and variable metadata datasets produced by W4M\'s XCMS [Smith *et al.*, 2006] and CAMERA [Kuhl *et al.*, 2012] tools.
+- The tool takes as input the data matrix, sample metadata, and variable metadata datasets produced by W4M\'s XCMS and CAMERA [Kuhl *et al.*, 2012] tools.
 - The tool produces the same trio of output datasets, modified as described below.
 
 This tool can perform several operations to reduce the number samples or features to be analyzed (although *this should be done only in a statistically sound manner* consistent with the nature of the experiment):
 
-- Samples may be selected by designating a "sample class" column in sampleMetadata and specifying criteria to include or exclude samples based on the contents of this column.
-- Features may be selected by specifying minimum or maximum value (or both) allowable in columns of variableMetadata.
-- To exclude minimal features from consideration, features may be selected by "range of maximum intensity for each feature", i.e., by specifying the minimum permitted maximum intensity in each row of the dataMatrix (i.e., for the feature across all samples).
+- *Sample filtering:* Samples may be selected by designating a "sample class" column in sampleMetadata and specifying criteria to include or exclude samples based on the contents of this column.
+- *Feature filtering:* Features may be selected by specifying minimum or maximum value (or both) allowable in columns of variableMetadata.
+- *Intensity filtering:* To exclude minimal features from consideration, a lower bound may be specified for the maximum intensity for a feature across all samples.
 
 This tool also conditions data for downstream statistical analysis:
 
@@ -122,7 +120,7 @@ This tool may be applied several times sequentially, which may be useful for:
 
 * Support enhancement https://github.com/HegemanLab/w4mclassfilter/issues/4 - "add and test no-imputation and centering-imputation functions":
   - Support no imputation.
-  - Support imputating missing feature-intensities as median intensity for the corresponding feature.
+  - Support imputing missing feature-intensities as median intensity for the corresponding feature.
 
 #### Internal modifications
 
@@ -170,7 +168,7 @@ This tool may be applied several times sequentially, which may be useful for:
 * The tool now appears in Galaxy with a new, more representative name: "W4M Data Subset". (Earlier versions of this tool appeared in Galaxy with the name "Sample Subset".)
 * Option was added to log-transform data matrix values.
 * Output datasets are named in conformance with the W4M convention of appending the name of each preprocessing tool to the input dataset name.
-* Superflous "Column that names the sample" input parameter was eliminated.
+* Superfluous "Column that names the sample" input parameter was eliminated.
 * Some documentation was updated or clarified.
 
 #### Internal modifications

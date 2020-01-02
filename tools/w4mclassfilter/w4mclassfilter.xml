@@ -53,7 +53,7 @@
             </sanitizer>
         </param>
         <param name="sampleclassNames" label="Sample-class names (or patterns)" type="text" value = ""
-            help="List (comma-separated) of names (or patterns to match names) of sample classes to include or exclude.  (Leave this empty to match no names.) [default: empty]">
+            help="List of names (or patterns to match names) of sample classes to include or exclude.  List should be comma-separated with no stray spaces. (Leave this empty to match no names.) [default: empty]">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -71,9 +71,9 @@
                     <add value="&#58;"    /> <!-- colon -->
                     <add value="&#59;"    /> <!-- semi, semicolon -->
                     <add value="&#63;"    /> <!-- what, question mark -->
-                    <add value="&#91;"    /> <!-- l-squib, left-squre-bracket -->
+                    <add value="&#91;"    /> <!-- l-squib, left-square-bracket -->
                     <add value="&#92;"    /> <!-- whack, backslash -->
-                    <add value="&#93;"    /> <!-- r-squib, right-squre-bracket -->
+                    <add value="&#93;"    /> <!-- r-squib, right-square-bracket -->
                     <add value="&#94;"    /> <!-- hat, caret -->
                     <add value="&#95;"    /> <!-- underscore -->
                 </valid>
@@ -89,7 +89,7 @@
             <option value="FALSE">regular-expression patterns: &#160;&#160; Use regular expressions to match sample-class names.</option>
         </param>
         <param name="variableRangeFilter" label="Variable-range filters" type="text" value = ""
-            help="List of filters (comma-separated), each specifying the range of permitted values in a column of 'Variable metdata' (specified as 'column:min:max'), as described in 'Variable-range filters' section below.  (Leave this empty for no filtering.) [default: empty]">
+            help="List of filters, each specifying the range of permitted values in a column of 'Variable metadata' (specified as 'column:min:max'), as described in 'Variable-range filters' section below.  List should be comma-separated with no stray spaces.  (Leave this empty for no filtering.) [default: empty]">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -113,7 +113,7 @@
             <option value="none">none: &#160;&#160; Perform no imputation.  Note that 'compute centers' cannot be set to 'medoid'.</option>
         </param>
         <param name="order_smpl" label="Columns that specify order for samples" type="text" value = "sampleMetadata"
-            help="List of sample-metadata column names (comma-separated) for sorting samples.  (This is ignored when 'Compute centers for classes' is set to either 'centroid' or 'median'.) [default: 'sampleMetadata']">
+            help="List of sample-metadata column names for sorting samples.  List should be comma-separated with no stray spaces.  (This is ignored when 'Compute centers for classes' is set to either 'centroid' or 'median'.) [default: 'sampleMetadata']">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -124,7 +124,7 @@
             </sanitizer>
         </param>
         <param name="order_vrbl" label="Columns that specify order for features" type="text" value = "variableMetadata"
-            help="List of feature-metadata (comma-separated) column names for sorting features. [default: 'variableMetadata']">
+            help="List of feature-metadata column names for sorting features.  List should be comma-separated with no stray spaces. [default: 'variableMetadata']">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -613,7 +613,7 @@
 
 **R package**
 
-The *w4mclassfilter* package (which is used by the W4M Data Subset tool) is available from the Hegeman lab github repository (https://github.com/HegemanLab/w4mclassfilter/releases).
+The *w4mclassfilter* package (which is used by the W4M Data Subset tool) is available from the Hegeman lab GitHub repository (https://github.com/HegemanLab/w4mclassfilter/releases).
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -624,20 +624,20 @@ See https://github.com/HegemanLab/w4mclassfilter_galaxy_wrapper#news
 
 ---------------------------------------------------
 
-===========================================================
-"W4M Data Subset" - Filter Workflow4Metabolomics data files
-===========================================================
+======================================================
+"W4M Data Subset" - Filter Workflow4Metabolomics data 
+======================================================
 
 ----------
 Motivation
 ----------
 
-GC-MS and LC-MS metabolomics experiments seek to resolve (as "features") chemicals that have distinct chromatographic retention-time ("rt") and (after ionization) mass-to-charge ratio ("m/z" or "mz").
-(If a chemical is fragmented or may have a variety of adducts, several features may result.)
-Data for a sample are collected as mass-spectral intensities, each of which is associated with a position on a 2D plane with dimensions of rt and m/z.
-Ideally, features would be sufficiently reproducible among sample-runs to distinguish features that are commmon among samples from those that differ.
+GC-MS and LC-MS metabolomics experiments seek to resolve "features", i.e., species that have distinct chromatographic retention time ("rt") and (after ionization) mass-to-charge ratio ("*m/z*" or "mz").
+(If a chemical is fragmented or may have a variety of adducts, several features will result.)
+Data for a sample are collected as mass-spectral intensities, each of which is associated with a position on a 2D plane with dimensions of rt and *m/z*.
+Ideally, features would be sufficiently reproducible among sample-runs to distinguish features that are similar among samples from those that differ in location or intensity.
 
-The chromatographic retention-time for a chemical can vary from one chromatography run to the next.
+The chromatographic retention time for a species can vary from one chromatography run to the next.
 The Workflow4Metabolomics suite of Galaxy tools (W4M, [Giacomoni *et al.*, 2014, Guitton *et al.* 2017])
 uses the XCMS preprocessing tools [Smith *et al.*, 2006]
 for "retention-time correction" to align features among samples.
@@ -660,9 +660,9 @@ The **W4M Data Subset** tool **selects subsets of samples, features, or data val
 
 This tool can perform several operations to reduce the number samples or features to be analyzed (although *this should be done only in a statistically sound manner* consistent with the nature of the experiment):
 
-- Samples may be selected by designating a "sample class" column in sampleMetadata and specifying criteria to include or exclude samples based on the contents of this column.
-- Features may be selected by specifying minimum or maximum value (or both) allowable in columns of variableMetadata.
-- To exclude minimal features from consideration, features may be selected by "range of maximum intensity for each feature", i.e., by specifying the minimum permitted maximum intensity in each row of the dataMatrix (i.e., for the feature across all samples).
+- *Sample filtering:* Samples may be selected by designating a "sample class" column in sampleMetadata and specifying criteria to include or exclude samples based on the contents of this column.
+- *Feature filtering:* Features may be selected by specifying minimum or maximum value (or both) allowable in columns of variableMetadata.
+- *Intensity filtering:* To exclude minimal features from consideration, a lower bound may be specified for the maximum intensity for a feature across all samples.
 
 This tool also conditions data for downstream statistical analysis:
 
@@ -780,7 +780,7 @@ Compute centers for classes, e.g., treatments (default = '``none``')
 	| '``median``' - For each treatment, return only the treatment-center computed as the median intensity for each feature.
 	| '``medoid``' - For each treatment, return only the medoid (the sample most similar to the other samples for that treatment).
 	|
-	| Note well: For '``mediod``' option, '``Imputation of missing values``' cannot be set to '``none``'.
+	| Note well: For '``medoid``' option, '``Imputation of missing values``' cannot be set to '``none``'.
 	|
 
 ------------
@@ -875,9 +875,10 @@ following order:
 Note for the range specification strings:
 
 - **If the "maximum" is less than the "minimum", then the range is exclusive**  (e.g., '``mz:800:200``' means retain only features whose mz is NOT in the range 200-800)
-- **If the name supplied in the first field is 'FEATMAX',**  then the string is defining the minimum (and possibly though less useful, maximum) intensity for each feature in the dataMatrix.  For example, '``FEATMAX:1e6:``' would specify  that any feature would be excluded if no sample had an intensity for that feature greater than 1000000.
+- **If the name supplied in the first field** is '``FEATMAX``',  then the string is defining the **threshold for the maximum intensity** for each feature in the dataMatrix.
 
-  - Note, however, that when the "maximum" is less than the "minimum" for the FEATMAX range specification, then the specification is ignored.
+  - For example, '``FEATMAX:1e6:``' would specify  that any feature would be excluded if no sample had an intensity for that feature greater than 1,000,000.
+  - Although a maximum may be specified, it seems unlikely that this would be useful. Note that when the "maximum" is less than the "minimum" for the FEATMAX range specification, then the specification is ignored.
 
 ----------------------------------
 Data transformation and imputation
@@ -905,11 +906,11 @@ A "center" for each treatment may be computed in lieu of all the samples for eac
 - '``median``' - For each treatment, return only the treatment-center computed as the median intensity for each feature.
 - '``medoid``' - For each treatment, return only the medoid (the sample most similar to the other samples for that treatment).  This choice requires that the '``Imputation of missing values``' argument must not be set to '``none``'.
 
-The medoid is computed as the sample having the smallest sum of its distances from other samples in the treatment.
+The medoid is the sample having the smallest sum of its distances from other samples in the treatment:
 
-- The distances are used to identify the medoid using code adapted from https://web.archive.org/web/20191231012914/https://www.biostars.org/p/11987/#11989
-- Because principal components are uncorrelated, distances are computed in principal-components space to minimize the distortion of computed distances by correlated features.
+- Because principal components are uncorrelated, distances are computed in the space defined by the principal-component scores to minimize the distortion of computed distances by correlated features.
 - Because principal components are used to compute distances, no missing values are permitted, which is why the '``Imputation of missing values``' argument must not be set to '``none``'.
+- The distances are used to identify the medoid using code adapted from https://web.archive.org/web/20191231012914/https://www.biostars.org/p/11987/#11989
 
 -----------------------------------------------------------------------------
 
@@ -932,7 +933,7 @@ Input Files
 +------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 -------------------------------
-Running Without Range-Filtering
+Example without Range-Filtering
 -------------------------------
 
 This example retains only samples whose '``gender``' attribute is '``M``'.
@@ -952,7 +953,7 @@ This example retains only samples whose '``gender``' attribute is '``M``'.
 +---------------------------------------------+-------------------------------+
 | Variable range-filters                      | (Leave this field empty.)     |
 +---------------------------------------------+-------------------------------+
-| Data transforamtion                         | none                          |
+| Data transformation                         | none                          |
 +---------------------------------------------+-------------------------------+
 | Missing-value imputation                    | center                        |
 +---------------------------------------------+-------------------------------+
@@ -976,7 +977,7 @@ This example retains only samples whose '``gender``' attribute is '``M``'.
 +-------------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
 
 ----------------------------
-Running With Range-Filtering
+Example with Range-Filtering
 ----------------------------
 
 This example retains only features whose ``mz`` is greater than 200, whose ``rt`` is less than 800, and whose maximum intensity across all samples is 2,000,000.
@@ -997,7 +998,7 @@ This example retains all samples (except those having zero variance for all feat
 +---------------------------------------------+-----------------------------------+
 | Variable range-filters                      | FEATMAX:20.93157:,mz:200:,rt::800 |
 +---------------------------------------------+-----------------------------------+
-| Data transforamtion                         | log2                              |
+| Data transformation                         | log2                              |
 +---------------------------------------------+-----------------------------------+
 | Missing-value imputation                    | zero                              |
 +---------------------------------------------+-----------------------------------+
@@ -1021,7 +1022,7 @@ This example retains all samples (except those having zero variance for all feat
 +-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
 
 --------------------------------
-Running With Treatment-Centering
+Example with Treatment-Centering
 --------------------------------
 
 This example retains only the samples that are medoids for their gender.
@@ -1041,7 +1042,7 @@ This example retains only the samples that are medoids for their gender.
 +---------------------------------------------+-----------------------------------+
 | Variable range-filters                      | (Leave this field empty.)         |
 +---------------------------------------------+-----------------------------------+
-| Data transforamtion                         | none                              |
+| Data transformation                         | none                              |
 +---------------------------------------------+-----------------------------------+
 | Missing-value imputation                    | zero                              |
 +---------------------------------------------+-----------------------------------+

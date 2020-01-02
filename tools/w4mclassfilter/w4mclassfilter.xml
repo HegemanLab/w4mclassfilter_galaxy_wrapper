@@ -53,7 +53,7 @@
             </sanitizer>
         </param>
         <param name="sampleclassNames" label="Sample-class names (or patterns)" type="text" value = ""
-            help="List of names (or patterns to match names) of sample classes to include or exclude.  List should be comma-separated with no stray spaces. (Leave this empty to match no names.) [default: empty]">
+            help="List of names (or patterns to match names) of sample classes to include or exclude.  List should be comma-separated with no stray space characters. (Leave this empty to match no names.) [default: empty]">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -89,7 +89,7 @@
             <option value="FALSE">regular-expression patterns: &#160;&#160; Use regular expressions to match sample-class names.</option>
         </param>
         <param name="variableRangeFilter" label="Variable-range filters" type="text" value = ""
-            help="List of filters, each specifying the range of permitted values in a column of 'Variable metadata' (specified as 'column:min:max'), as described in 'Variable-range filters' section below.  List should be comma-separated with no stray spaces.  (Leave this empty for no filtering.) [default: empty]">
+            help="List of filters, each specifying the range of permitted values in a column of 'Variable metadata' (specified as 'column:min:max'), as described in 'Variable-range filters' section below.  List should be comma-separated with no stray space characters.  (Leave this empty for no filtering.) [default: empty]">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -113,7 +113,7 @@
             <option value="none">none: &#160;&#160; Perform no imputation.  Note that 'compute centers' cannot be set to 'medoid'.</option>
         </param>
         <param name="order_smpl" label="Columns that specify order for samples" type="text" value = "sampleMetadata"
-            help="List of sample-metadata column names for sorting samples.  List should be comma-separated with no stray spaces.  (This is ignored when 'Compute centers for classes' is set to either 'centroid' or 'median'.) [default: 'sampleMetadata']">
+            help="List of sample-metadata column names for sorting samples.  List should be comma-separated with no stray space characters.  (This is ignored when 'Compute centers for classes' is set to either 'centroid' or 'median'.) [default: 'sampleMetadata']">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -124,7 +124,7 @@
             </sanitizer>
         </param>
         <param name="order_vrbl" label="Columns that specify order for features" type="text" value = "variableMetadata"
-            help="List of feature-metadata column names for sorting features.  List should be comma-separated with no stray spaces. [default: 'variableMetadata']">
+            help="List of feature-metadata column names for sorting features.  List should be comma-separated with no stray space characters. [default: 'variableMetadata']">
             <sanitizer>
                 <valid initial="string.letters">
                     <add preset="string.digits"/>
@@ -730,7 +730,7 @@ Column containing the sample-class names (default = '``class``')
 
 Sample-class names (default = no names)
 	| names (or regular expressions to match names) of sample-classes to include or exclude
-	| (Separate names with commas, avoiding inclusion of any extra space characters.)
+	| (Separate names with commas, without any extra space characters.)
 	|
 
 Exclude/include named (or matched) classes (default = '``filter-out``')
@@ -738,14 +738,14 @@ Exclude/include named (or matched) classes (default = '``filter-out``')
 	| '``filter-out``' - exclude only the named sample-classes
 	|
 
-Use 'Wild cards' or 'regular expressions' (default = '``wild-cards``')
-	| '``wild-cards``' - use wild cards to match names of sample-classes (see the *'Wild-card patterns to match class names'* section below.)
-	| '``regular-expressions``' - use regular expressions to match the named sample-classes (see the *'Regular-expression patterns to match class names'* section below.)
+Use 'wild card patterns' or 'regular expression patterns' (default = '``wild-card patterns``')
+	| '``wild-card patterns``' - use wild cards to match names of sample-classes (see the *'Wild-card patterns to match class names'* section below.)
+	| '``regular-expression patterns``' - use regular expressions to match the named sample-classes (see the *'Regular-expression patterns to match class names'* section below.)
 	|
 
 Variable-range filters (default = no filters)
 	| variable-range filters (see the *'Variable-range filters'* section below)
-	| (Separate filter expressions with commas, avoiding inclusion of any extra space characters.)
+	| (Separate filter expressions with commas, without any extra space characters.)
 	|
 
 Data transformation (default = '``none``')
@@ -766,12 +766,12 @@ Imputation of missing values (default = '``zero``')
 
 Columns that specify order for samples (default = '``sampleMetadata``')
 	| names of the columns in **sampleMetadata** that is used to sort samples; only letters, digits, periods, and underscores are permitted.
-	| (Separate column names with commas, avoiding inclusion of any extra space characters.)
+	| (Separate column names with commas, without any extra space characters.)
 	|
 
 Columns that specify order for features (default = '``variableMetadata``')
 	| names of the columns in **variableMetadata** that is used to sort features; only letters, digits, periods, and underscores are permitted.
-	| (Separate column names with commas, avoiding inclusion of any extra space characters.)
+	| (Separate column names with commas, without any extra space characters.)
 	|
 
 Compute centers for classes, e.g., treatments (default = '``none``')

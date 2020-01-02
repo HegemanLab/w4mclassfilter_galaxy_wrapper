@@ -634,7 +634,7 @@ Motivation
 
 GC-MS and LC-MS metabolomics experiments seek to resolve (as "features") chemicals that have distinct chromatographic retention-time ("rt") and (after ionization) mass-to-charge ratio ("m/z" or "mz").
 (If a chemical is fragmented or may have a variety of adducts, several features may result.)
-Data for a sample are collected as MS intensities, each of which is associated with a position on a 2D plane with dimensions of rt and m/z.
+Data for a sample are collected as mass-spectral intensities, each of which is associated with a position on a 2D plane with dimensions of rt and m/z.
 Ideally, features would be sufficiently reproducible among sample-runs to distinguish features that are commmon among samples from those that differ.
 
 The chromatographic retention-time for a chemical can vary from one chromatography run to the next.
@@ -713,7 +713,6 @@ Parameters
 Data matrix
 	| feature x sample **dataMatrix** (tab-separated values) file of the numeric data matrix, with period-character ('.') as decimal, and 'NA' for missing values.
 	| The file must not contain metadata apart from the required row and column names.
-	| The row and column names must be identical (with regard to both content or order) to the respective rownames of the variable- and sample-metadata files.
 	|
 
 Sample metadata
@@ -730,8 +729,8 @@ Column containing the sample-class names (default = '``class``')
 	|
 
 Sample-class names (default = no names)
-	| comma-separated names (or regular expressions to match names) of sample-classes to include or exclude
-	| (Avoid including any extra space characters.)
+	| names (or regular expressions to match names) of sample-classes to include or exclude
+	| (Separate names with commas, avoiding inclusion of any extra space characters.)
 	|
 
 Exclude/include named (or matched) classes (default = '``filter-out``')
@@ -745,8 +744,8 @@ Use 'Wild cards' or 'regular expressions' (default = '``wild-cards``')
 	|
 
 Variable-range filters (default = no filters)
-	| comma-separated names of variable-range filters (see the *'Variable-range filters'* section below)
-	| (Avoid including any extra space characters.)
+	| variable-range filters (see the *'Variable-range filters'* section below)
+	| (Separate filter expressions with commas, avoiding inclusion of any extra space characters.)
 	|
 
 Data transformation (default = '``none``')
@@ -789,7 +788,9 @@ Output files
 ------------
 
 sampleMetadata
-	| (tab-separated values) file identical to the **sampleMetadata** file given as an input argument, excepting lacking rows for samples that have been filtered out (by the sample-class filter, or because of zero variance, or because they were missing in the input data matrix)
+	| (tab-separated values) file.
+	| If centering is '``none``' or  '``medoid``', this will be identical to the **sampleMetadata** file given as an input argument, excepting lacking rows for samples that have been filtered out (by the sample-class filter, or because of zero variance, or because they were missing in the input data matrix)
+	| If centering is '``centroid``' or  '``median``', most columns will be replaced with the treatment name and the number of samples for that treatment.
 	|
 
 variableMetadata
@@ -805,7 +806,7 @@ dataMatrix
 Wild-card patterns to match class names
 -----------------------------------------
 
-W4M Data Subset supports use of R "wild card" patterns to select class-names.
+W4M Data Subset supports use of "wild card" patterns to select class-names.
 
 - use '``?``' to match a single character
 - use '``*``' to match zero or more characters
@@ -821,10 +822,10 @@ For example
 Regular-expression patterns to match class names
 --------------------------------------------------
 
-W4M Data Subset supports use of R "regular expression" patterns to select class-names.
+W4M Data Subset supports use of R "extended regular expression" patterns to select class-names.
 
-R uses POSIX 1003.2 standard regular expressions, which allow precise pattern-matching and are exhaustively defined at:
-http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html
+R extended regular expressions, which allow precise pattern-matching and are exhaustively defined at
+https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html
 
 However, only a few basic building blocks of regular expressions need to be mastered for most cases:
 

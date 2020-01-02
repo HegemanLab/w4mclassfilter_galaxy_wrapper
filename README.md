@@ -36,7 +36,7 @@ GC-MS and LC-MS metabolomics experiments seek to resolve (as "features") chemica
 have distinct chromatographic retention-time ("rt") and (after
 ionization) mass-to-charge ratio ("m/z" or "mz"). (If a chemical is
 fragmented or may have a variety of adducts, several features may result.)
-Data for a sample are collected as MS intensities, each of
+Data for a sample are collected as mass-spectral intensities, each of
 which is associated with a position on a 2D plane with dimensions of rt
 and m/z. Ideally, features would be sufficiently reproducible among
 sample-runs to distinguish features that are commmon among samples from

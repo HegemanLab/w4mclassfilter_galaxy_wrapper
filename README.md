@@ -38,7 +38,7 @@ Data for a sample are collected as mass-spectral intensities, each of
 which is associated with a position on a 2D plane with dimensions of rt
 and *m/z*. Ideally, features would be sufficiently reproducible among
 sample-runs to distinguish features that are similar among samples from
-those that differ in location or intensity.
+those that differ.
 
 For liquid chromatography, the retention time for a species can vary considerably from one chromatography
 run to the next.  The Workflow4Metabolomics suite of Galaxy tools
@@ -67,7 +67,7 @@ This tool can perform several operations to reduce the number samples or feature
 
 - *Sample filtering:* Samples may be selected by designating a "sample class" column in *sampleMetadata* and specifying criteria to include or exclude samples based on the contents of this column.
 - *Feature filtering:* Features may be selected by specifying minimum or maximum value (or both) allowable in columns of *variableMetadata*.
-- *Intensity filtering:* To exclude minimal features from consideration, a lower bound may be specified for the maximum intensity for a feature across all samples.
+- *Intensity filtering:* To exclude minimal features from consideration, a lower bound may be specified for the maximum intensity for a feature across all samples (i.e., for a row in *dataMatrix*).
 
 This tool also conditions data for statistical analysis:
 

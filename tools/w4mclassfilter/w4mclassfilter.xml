@@ -1,12 +1,9 @@
-<tool id="w4mclassfilter" name="W4m Data Subset" version="0.98.18">
+<tool id="w4mclassfilter" name="W4m Data Subset" version="0.98.19">
     <description>Filter W4M data by values or metadata</description>
-    <!-- Here is the hyphenation standard that I *try* to apply consistently in my documentation: 
-         https://web.archive.org/web/20161014025757/http://www.sandranoonan.com/dont-let-hyphenation-drive-crazy/
-    -->
     <requirements>
-        <requirement type="package" version="3.6.2">r-base</requirement>
+        <requirement type="package" version="4.0.3">r-base</requirement>
         <requirement type="package" version="1.1_5">r-batch</requirement>
-        <requirement type="package" version="0.98.18">w4mclassfilter</requirement>
+        <requirement type="package" version="0.98.19">w4mclassfilter</requirement>
     </requirements>
     <command detect_errors="aggressive"><![CDATA[
     unset R_HOME;
@@ -602,7 +599,42 @@
           </assert_contents>
         </output>
       </test>
+      <!-- test 13 -->
+      <test>
+        <param name="dataMatrix_in" value="input_med1_dm.tsv"/>
+        <param name="sampleMetadata_in" value="input_med1_sm.tsv"/>
+        <param name="variableMetadata_in" value="input_med1_vm.tsv"/>
+        <param name="classnameColumn" value="pcgroup"/>
+        <param name="sampleclassNames" value=""/>
+        <param name="wildcards" value="TRUE"/>
+        <param name="inclusive" value="FALSE"/>
+        <param name="imputation" value="zero"/>
+        <param name="order_vrbl" value="sample"/>
+        <param name="order_smpl" value="pcgroup"/>
+        <param name="centering" value="medoid"/>
+        <output name="sampleMetadata_out">
+          <assert_contents>
+            <has_text text="X10" />
+            <has_text text="M70T1043" />
+            <has_text text="70.01229" />
+            <has_text text="1042.837" />
+            <has_text text="X345" />
+            <has_text text="M74T33" />
+            <not_has_text text="M70T1042_1" />
+            <not_has_text text="M74T34" />
+          </assert_contents>
+        </output>
+        <output name="dataMatrix_out">
+          <assert_contents>
+            <has_text text="X10" />
+            <has_text text="X345" />
+          </assert_contents>
+        </output>
+      </test>
     </tests>
+    <!-- Here is the hyphenation standard that I *try* to apply consistently in my documentation:
+         https://web.archive.org/web/20161014025757/http://www.sandranoonan.com/dont-let-hyphenation-drive-crazy/
+    -->
     <help><![CDATA[
 
 
@@ -625,7 +657,7 @@ See https://github.com/HegemanLab/w4mclassfilter_galaxy_wrapper#news
 ---------------------------------------------------
 
 ======================================================
-"W4M Data Subset" - Filter Workflow4Metabolomics data 
+"W4M Data Subset" - Filter Workflow4Metabolomics data
 ======================================================
 
 ----------

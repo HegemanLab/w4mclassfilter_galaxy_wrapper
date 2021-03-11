@@ -88,6 +88,17 @@ This tool may be applied several times sequentially, which may be useful for:
 
 ## NEWS
 
+### Changes in version 0.98.19
+
+#### New features
+
+* Bug fix: "medoid computation aborts when trt is numeric or some trts have one replicate" [https://github.com/HegemanLab/w4mclassfilter/issues/8](https://github.com/HegemanLab/w4mclassfilter/issues/8).
+
+#### Internal modifications
+
+* Use v0.98.19 of the [w4mclassfilter bioconda package](https://bioconda.github.io/recipes/w4mclassfilter/README.html) which was built with R 4.0.3.
+* Use v4.0.3 of the [r-base conda-forge package](https://anaconda.org/conda-forge/r-base).
+
 ### Changes in version 0.98.18
 
 #### New features
